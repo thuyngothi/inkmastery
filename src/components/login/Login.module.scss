@@ -1,0 +1,67 @@
+$mainColor: #c7cbe3;
+$fistColor:#7367f0; 
+$secondColor: #9087f3;
+
+.container {
+    background-color: #393d52;
+    padding: 24px;
+}
+
+.content {
+    width: 30%;
+    padding: 32px;
+}
+
+.formLogin {
+    margin: 24px 0;
+    width: 100%;
+    color: $mainColor;
+}
+.formLogin label {
+    color: $mainColor !important;
+}
+.formLogin input {
+    // border: 1px solid #9087f3;
+    &:hover {
+        border: 1px solid $secondColor;
+        outline: none;
+    }
+    &:focus {
+        border: 1px solid $secondColor;
+        outline: none;
+    }
+}
+
+.linkBtn {
+    color: $fistColor;
+    padding: 0;
+    font-size: 15px;
+    margin-left: 12px;
+    &:hover {
+        color: $secondColor !important;
+    }
+}
+
+.loginBtn {
+    width: 100%;
+    background-color: $secondColor;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 16px;
+    &:hover {
+        color: #fff !important;
+        font-weight: 600;
+        background-color: $fistColor !important;
+    }
+}
+
+.divider {
+    color: $mainColor !important;
+    &::before {
+       border-block-start: 1px solid $mainColor !important;
+    }
+    &::after{
+        border-block-start: 1px solid $mainColor !important;
+    }
+}
