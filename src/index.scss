@@ -1,3 +1,5 @@
+$mainColor: #c7cbe3;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -16,4 +18,5 @@ code {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  // color:$mainColor;
 }
