@@ -2,13 +2,12 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message } from 'antd'
+import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space } from 'antd'
 
 import styles from './Login.module.scss'
-import Home from '../homePage/Home'
 import login_img from '../../assets/images/pages/auth-v2-login-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
-const { Title, Text, Paragraph } = Typography
+const { Title, Text } = Typography
 const Login = () => {
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -17,6 +16,21 @@ const Login = () => {
         setLoading(true)
         try {
             const response = await axios.post('https://localhost:44389/api/Auth/Login', values)
+            console.log(response);
+            
+            if(response && response.status === 200){
+                const res = response.data;
+
+                if(!localStorage.getItem("accessToken")){
+                    console.log(localStorage.getItem("accessToken"));
+                    localStorage.setItem("accessToken", res.accessToken);
+                    localStorage.setItem("refreshToken", res.refreshToken);
+                    
+                    const accessToken = localStorage.getItem("accessToken");
+                    
+                }
+            }
+
             navigate('/home');
         } catch (error) {
             console.error(error);
@@ -28,15 +42,15 @@ const Login = () => {
     return (
         <>
             <Flex className={styles.container}>
-                <Flex
+                <Space
                     justify='center'
                     style={{
-                        width: '70%',
+                        width: '65%',
                         backgroundColor: '#202336',
                         padding: '40px 0'
                     }}>
                     <img style={{ maxWidth: '60%' }} src={login_img}></img>
-                </Flex>
+                </Space>
 
                 <Flex align='flex-start' vertical className={styles.content}>
                     <img style={{ width: '30%' }} src={logo}></img>
@@ -56,14 +70,14 @@ const Login = () => {
                             name='username'
                             rules={[{ required: true, message: 'Please input your username!' }]}
                         >
-                            <Input className={styles.userInput} placeholder='' />
+                            <Input className={styles.userInput} placeholder='Tài khoản' />
                         </Form.Item>
                         <Form.Item
                             label='Mật khẩu'
                             name='password'
                             rules={[{ required: true, message: 'Please input your password!' }]}
                         >
-                            <Input className={styles.userInput} />
+                            <Input.Password className={styles.userInput} placeholder='Mật khẩu' />
                         </Form.Item>
 
                         <Flex justify='space-between'>
@@ -73,12 +87,14 @@ const Login = () => {
                             >
                                 <Checkbox>Nhớ mật khẩu</Checkbox>
                             </Form.Item>
-                            <Button
-                                className={styles.linkBtn}
-                                type='link'
-                            >
-                                Quên mật khẩu?
-                            </Button>
+                            <Link to='/forgotPassword'>
+                                <Button
+                                    className={styles.linkBtn}
+                                    type='link'
+                                >
+                                    Quên mật khẩu?
+                                </Button>
+                            </Link>
                         </Flex>
 
                         <Form.Item>

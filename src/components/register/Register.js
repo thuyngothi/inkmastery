@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
+import clsx from 'clsx'
 
 import { Flex, Typography, Form, Input, Checkbox, Button, Divider, Space, DatePicker } from 'antd'
 
@@ -16,7 +17,7 @@ const Register = () => {
             <Flex className={styles.container}>
                 <Space
                     style={{
-                        width: '70%',
+                        width: '65%',
                         backgroundColor: '#202336',
                         padding: '40px 0'
                     }}>
@@ -48,6 +49,7 @@ const Register = () => {
                             label='Ngày sinh'
                             name='dob'
                             rules={[{ required: true, message: 'Please input your date of birth!' }]}
+                            style={{color:'red'}}
                         >
                             <DatePicker className={styles.inforInput} placeholder='yyyy-mm-dd' />
                         </Form.Item>
@@ -81,7 +83,7 @@ const Register = () => {
                             name='password'
                             rules={[{ required: true, message: 'Please input your password!' }]}
                         >
-                            <Input className={styles.inforInput} placeholder='Mật khẩu' />
+                            <Input.Password className={styles.inforInput} placeholder='Mật khẩu' />
                         </Form.Item>
 
                         <Form.Item
