@@ -13,12 +13,12 @@ $thirdColor: #d6d9e485;
     padding: 32px;
 }
 
-.formLogin {
+.formContainer {
     margin-top: 24px;
     width: 100%;
     color: $mainColor;
 }
-.formLogin label {
+.formContainer label {
     color: $mainColor !important;
 }
 .userInput {
@@ -38,9 +38,6 @@ $thirdColor: #d6d9e485;
         color: $thirdColor !important;
     }
 }
-.userInput input::placeholder {
-    color: $thirdColor !important;
-}
 
 .linkBtn {
     color: $fistColor;
@@ -52,7 +49,7 @@ $thirdColor: #d6d9e485;
     }
 }
 
-.loginBtn {
+.submitBtn {
     width: 100%;
     background-color: $secondColor;
     border: none;
@@ -63,15 +60,5 @@ $thirdColor: #d6d9e485;
         color: #fff !important;
         font-weight: 600;
         background-color: $fistColor !important;
-    }
-}
-
-.divider {
-    color: $mainColor !important;
-    &::before {
-       border-block-start: 1px solid $mainColor !important;
-    }
-    &::after{
-        border-block-start: 1px solid $mainColor !important;
     }
 }
