@@ -1,11 +1,30 @@
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider } from 'antd'
+import React, { useState } from 'react'
+import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios'
+
+import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message } from 'antd'
 
 import styles from './Login.module.scss'
-
+import Home from '../homePage/Home'
 import login_img from '../../assets/images/pages/auth-v2-login-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
 const { Title, Text, Paragraph } = Typography
 const Login = () => {
+    const navigate = useNavigate()
+    const [loading, setLoading] = useState(false)
+
+    const onFinish = async (values) => {
+        setLoading(true)
+        try {
+            const response = await axios.post('https://localhost:44389/api/Auth/Login', values)
+            navigate('/home');
+        } catch (error) {
+            console.error(error);
+            message.error('login failed!');
+        }
+        setLoading(false);
+    };
+
     return (
         <>
             <Flex className={styles.container}>
@@ -18,36 +37,72 @@ const Login = () => {
                     }}>
                     <img style={{ maxWidth: '60%' }} src={login_img}></img>
                 </Flex>
+
                 <Flex align='flex-start' vertical className={styles.content}>
                     <img style={{ width: '30%' }} src={logo}></img>
                     <Title style={{ color: '#c7cbe3' }} level={4}>Chào Mừng Đến Với InkMastery!</Title>
-                    <Text style={{textAlign:'left'}}>Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu cuộc phiêu lưu</Text>
+                    <Text style={{ textAlign: 'left' }}>Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu cuộc phiêu lưu</Text>
                     <Form
                         className={styles.formLogin}
                         layout='vertical'
                         wrapperCol={{ span: 24 }}
+                        initialValues={{
+                            remember: true,
+                        }}
+                        onFinish={onFinish}
                     >
-                        <Form.Item label='Tài khoản'>
-                            <Input placeholder='' />
+                        <Form.Item
+                            label='Tài khoản'
+                            name='username'
+                            rules={[{ required: true, message: 'Please input your username!' }]}
+                        >
+                            <Input className={styles.userInput} placeholder='' />
                         </Form.Item>
-                        <Form.Item label='Mật khẩu'>
-                            <Input placeholder='' />
+                        <Form.Item
+                            label='Mật khẩu'
+                            name='password'
+                            rules={[{ required: true, message: 'Please input your password!' }]}
+                        >
+                            <Input className={styles.userInput} />
                         </Form.Item>
-                        <Form.Item>
-                            <Flex justify='space-between' align='center'>
+
+                        <Flex justify='space-between'>
+                            <Form.Item
+                                name='remember'
+                                valuePropName='checked'
+                            >
                                 <Checkbox>Nhớ mật khẩu</Checkbox>
-                                <Button className={styles.linkBtn} type='link'>Quên mật khẩu?</Button>
-                            </Flex>
+                            </Form.Item>
+                            <Button
+                                className={styles.linkBtn}
+                                type='link'
+                            >
+                                Quên mật khẩu?
+                            </Button>
+                        </Flex>
+
+                        <Form.Item>
+                            <Button size='middle'
+                                htmlType='submit'
+                                loading={loading}
+                                className={styles.loginBtn}
+                            >
+                                Đăng Nhập
+                            </Button>
                         </Form.Item>
-                        <Button size='middle' className={styles.loginBtn}>Đăng Nhập</Button>
                     </Form>
-                    <Flex align='center' justify='center' style={{width:'100%'}}>
+
+                    <Flex align='center' justify='center' style={{ width: '100%' }}>
                         <Text>Bạn chưa có tài khoản? </Text>
-                        <Button type='link' className={styles.linkBtn}>Đăng ký tài khoản</Button>
+                        <Button type='link' className={styles.linkBtn}>
+                            <Link to='/register'>
+                                Đăng ký tài khoản
+                            </Link>
+                        </Button>
                     </Flex>
                     <Divider className={styles.divider}>Hoặc</Divider>
                     <Flex>
-                        
+
                     </Flex>
                 </Flex>
             </Flex>
