@@ -22,3 +22,14 @@ $secondColor: #9087f3;
   background-color: $fistColor !important;
   border: 1px solid $fistColor !important;
 }
+
+.ant-menu li:hover .ant-menu-item{
+  background-color: $secondColor !important;
+}
+.ant-menu-item-selected {
+  background-color: $fistColor;
+}
+.ant-menu-item-selected .ant-menu-title-content,
+.ant-menu-item-selected .anticon {
+  color: #fff !important;
+}

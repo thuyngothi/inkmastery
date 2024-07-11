@@ -23,11 +23,8 @@ const Login = () => {
 
                 if(!localStorage.getItem("accessToken")){
                     console.log(localStorage.getItem("accessToken"));
-                    localStorage.setItem("accessToken", res.accessToken);
-                    localStorage.setItem("refreshToken", res.refreshToken);
-                    
-                    const accessToken = localStorage.getItem("accessToken");
-                    
+                    localStorage.setItem("token", res.accessToken);
+                    localStorage.setItem("refresh", res.refreshToken);
                 }
             }
 
@@ -68,14 +65,14 @@ const Login = () => {
                         <Form.Item
                             label='Tài khoản'
                             name='username'
-                            rules={[{ required: true, message: 'Please input your username!' }]}
+                            // rules={[{ required: true, message: 'Please input your username!' }]}
                         >
                             <Input className={styles.userInput} placeholder='Tài khoản' />
                         </Form.Item>
                         <Form.Item
                             label='Mật khẩu'
                             name='password'
-                            rules={[{ required: true, message: 'Please input your password!' }]}
+                            // rules={[{ required: true, message: 'Please input your password!' }]}
                         >
                             <Input.Password className={styles.userInput} placeholder='Mật khẩu' />
                         </Form.Item>

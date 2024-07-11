@@ -3,8 +3,12 @@ $fistColor:#7367f0;
 $secondColor: #9087f3;
 $thirdColor: #d6d9e485;
 
+$BgMainColor: #202336;
+$BgSecondColor: #393d52;
+$thirdBgColor: #2f3349;
+
 .container {
-    background-color: #393d52;
+    background-color: $BgSecondColor;
     padding: 24px;
 }
 
@@ -22,16 +26,16 @@ $thirdColor: #d6d9e485;
     color: $mainColor !important;
 }
 .userInput {
-    background-color: #393d52;
+    background-color: $BgSecondColor;
     color: $mainColor;
     border: 1px solid $secondColor;
     width: 100%;
     &:hover {
-        background-color: #393d52;
+        background-color: $BgSecondColor;
         border: 1px solid $secondColor;
     }
     &:focus{
-        background-color: #393d52;
+        background-color: $BgSecondColor;
         border: 1px solid $secondColor !important;
     }
     &::placeholder{
