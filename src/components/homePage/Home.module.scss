@@ -1,13 +1,61 @@
 $mainColor: #c7cbe3;
 $fistColor:#7367f0; 
 $secondColor: #9087f3;
-$thirdColor: #d6d9e485;
+
+$mainBgColor: #202336;
+$secondBgColor: #393d52;
+$thirdBgColor: #2f3349;
 
 .sidebar {
-    width: 20%;
-    background-color: #393d52;
-    // height: max-content;
+    width: 25vw;
+    background-color: $secondBgColor ;
+    display: inline-block;
+    float: left;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
 }
 .sidebar img {
     width: 15%;
+}
+
+.logoText {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.sidebarMenu {
+    background-color: $secondBgColor;
+}
+.sidebarMenu li {
+    color: $mainColor !important;
+    text-align: left;
+}
+
+// =============== Content CSS =======================
+.contentContainer {
+    background-color: $mainBgColor;
+    width: 75vw;
+    float: right;
+    // display: inline-block;
+}
+.content {
+    width: 80%;
+    padding: 16px 0;
+}
+
+.search {
+    height: 60px;
+    background-color: $thirdBgColor !important;
+    color: $mainColor;
+    border: none;
+    font-size: 18px;
+    &:focus {
+        outline: 0 !important;
+    }
+}
+.search input::placeholder{
+    color: $mainColor !important;
 }

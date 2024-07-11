@@ -40,7 +40,7 @@ const Register = () => {
                         <Form.Item
                             label='Tài khoản'
                             name='username'
-                            rules={[{ required: true, message: 'Please input your username!' }]}
+                            // rules={[{ required: true, message: 'Please input your username!' }]}
                         >
                             <Input className={styles.inforInput} placeholder='Tài khoản' />
                         </Form.Item>
@@ -81,7 +81,7 @@ const Register = () => {
                         <Form.Item
                             label='Mật khẩu'
                             name='password'
-                            rules={[{ required: true, message: 'Please input your password!' }]}
+                            // rules={[{ required: true, message: 'Please input your password!' }]}
                         >
                             <Input.Password className={styles.inforInput} placeholder='Mật khẩu' />
                         </Form.Item>
