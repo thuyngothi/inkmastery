@@ -27,7 +27,7 @@ $secondColor: #9087f3;
   background-color: $secondColor !important;
 }
 .ant-menu-item-selected {
-  background-color: $fistColor;
+  background-color: $fistColor !important;
 }
 .ant-menu-item-selected .ant-menu-title-content,
 .ant-menu-item-selected .anticon {

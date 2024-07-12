@@ -11,12 +11,23 @@ const { Title, Text } = Typography
 
 const ForgetPass = () => {
     const [loading, setLoading] = useState(false)
-    const onFinish = async(values) => {
-        const response = await axios.post('https://localhost:44389/api/Auth/ForgotPassword')
-        
-    }
+    const navigate = useNavigate()
+    const [email, setEmail] = useState('');
 
-    return (        
+    const onFinish = async (values) => {
+        setLoading(true)
+        try {
+            const response = await axios.post(`https://localhost:44389/api/Auth/ForgotPassword?email=${email}`)
+            navigate('/updatePassword')
+        } catch (error) {
+            console.error('Lỗi: ', error);
+        }
+
+        setLoading(false);
+    }
+    //$2a$11$rGApX9bDrReF6O1ZTiSgJ.FOMirzGjDLobUGufhbMciez61m4CEjC
+
+    return (
         <>
             <Flex className={styles.container}>
                 <Space
@@ -36,14 +47,18 @@ const ForgetPass = () => {
                         className={styles.formContainer}
                         layout='vertical'
                         wrapperCol={{ span: 24 }}
-                    // onFinish={onFinish}
+                        onFinish={onFinish}
                     >
                         <Form.Item
                             label='Email'
-                            name='email'
+                            required
                             rules={[{ required: true, message: 'Please input your email!' }]}
                         >
-                            <Input className={styles.userInput} placeholder='Email' />
+                            <Input 
+                            name='email'
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            className={styles.userInput} placeholder='Email' />
                         </Form.Item>
 
                         <Form.Item>
@@ -57,7 +72,7 @@ const ForgetPass = () => {
                         </Form.Item>
                     </Form>
 
-                    <Button type='link' className={styles.linkBtn} style={{margin:'0 auto'}}>
+                    <Button type='link' className={styles.linkBtn} style={{ margin: '0 auto' }}>
                         <Link to='/'>
                             Quay lại đăng nhập
                         </Link>

@@ -65,14 +65,16 @@ const Home = () => {
                 </Menu>
             </Flex>
             <Flex justify='space-around' className={styles.contentContainer}>
-                <Flex vertical  className={styles.content}>
-                    <Input className={styles.search} size='large' placeholder='Search' prefix={<SearchOutlined />} />
-                    <Flex wrap gap='large' justify='space-between' style={{padding:'16px'}}>
-                        <Card 
+                <Flex vertical className={styles.content}>
+                    <Flex className={styles.header} align='center'>
+                        <Input className={styles.search} size='large' placeholder='Search' prefix={<SearchOutlined />} />
+                    </Flex>
+                    <Flex wrap gap='large' justify='space-between' style={{ padding: '16px' }}>
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -80,11 +82,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -92,11 +94,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -104,11 +106,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -116,11 +118,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -128,11 +130,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
@@ -140,11 +142,11 @@ const Home = () => {
                                 <Text>Write descritption here. something more about this object</Text>
                             </Flex>
                         </Card>
-                        <Card 
+                        <Card
                             hoverable
-                            style={{width:'30%', backgroundColor: '#2f3349'}}
-                            cover = {
-                                <img src={logo}/>
+                            style={{ width: '30%', backgroundColor: '#2f3349' }}
+                            cover={
+                                <img src={logo} />
                             }
                         >
                             <Flex vertical>
