@@ -92,7 +92,6 @@ const UpdatePass = () => {
                             label='Mã xác minh'
                             validateStatus={errors.confirmCode ? 'error' : ''}
                             help={errors.confirmCode || ''}
-                            //rules={[{ required: true, message: 'Please input verify code!' }]}
                         >
                             <Input
                                 name='confirmCode'

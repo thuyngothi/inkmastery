@@ -50,7 +50,7 @@ $thirdBgColor: #2f3349;
     height: 65px;
     background-color: $thirdBgColor;
     border-radius: 8px;
-    
+    padding: 8px;
 }
 .search {
     height: 50px;
@@ -66,4 +66,11 @@ $thirdBgColor: #2f3349;
 }
 .search input::placeholder{
     color: $mainColor !important;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
 }
