@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import { useForm } from 'react-hook-form';
 import axios from 'axios'
 import moment from 'moment';
 
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider, Space, DatePicker, Select } from 'antd'
+import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker } from 'antd'
 
 import styles from './Register.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-register-illustration-dark.png'
@@ -13,6 +12,7 @@ const { Title, Text, Paragraph } = Typography
 
 const Register = () => {
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate()
 
     const [data, setData] = useState({
@@ -42,21 +42,36 @@ const Register = () => {
     };
 
     const handleSubmit = async () => {
-        setLoading(true)
-
+    
         const formData = new FormData();
         formData.append('Username', data.Username);
         formData.append('Email', data.Email);
         formData.append('Password', data.Password);
         formData.append('FullName', data.FullName);
         formData.append('PhoneNumber', data.PhoneNumber);
-        if(data.DateOfBirth) {
+        if (data.DateOfBirth) {
             formData.append('DateOfBirth', data.DateOfBirth);
         }
         formData.append('Gender', data.Gender);
         formData.append('TeamId', data.TeamId);
-
         console.log(formData)
+
+        const { Username, Email, Password, FullName, PhoneNumber } = data;
+
+        // Validation
+        let newErrors = {};
+        if (!Username) newErrors.Username = 'Please input Username!';
+        if (!Email) newErrors.Email = 'Please input Email!';
+        if (!Password) newErrors.Password = 'Please input your password!';
+        if (!FullName) newErrors.FullName = 'Please input your FullName!';
+        if (!PhoneNumber) newErrors.PhoneNumber = 'Please input your Phone number!';
+
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors);
+            return;
+        }
+
+        setLoading(true)
         try {
             const response = await axios.post('https://localhost:44389/api/Auth/Register', formData, {
                 headers: {
@@ -79,9 +94,9 @@ const Register = () => {
                     style={{
                         width: '65%',
                         backgroundColor: '#202336',
-                        padding: '40px 0'
+                        padding: '40px 0',
                     }}>
-                    <img style={{ maxWidth: '60%' }} src={login_img}></img>
+                    <img style={{ maxWidth: '60%'}} src={login_img}></img>
                 </Space>
 
                 <Flex align='flex-start' vertical className={styles.content}>
@@ -100,12 +115,15 @@ const Register = () => {
                     >
                         <Form.Item
                             label='Tài khoản' required
-                            rules={[{ required: true, message: 'Vui lòng nhập vào tên tài khoản!' }]}
+                            validateStatus={errors.Username ? 'error' : ''}
+                            help={errors.Username || ''}
+                           // rules={[{ required: true, message: 'Vui lòng nhập vào tên tài khoản!' }]}
                         >
                             <Input
                                 name='Username'
                                 // {...register('Username', { required: 'Vui lòng nhập vào tên tại khoản!' })}
-                                value={data.Username} onChange={handleChange}
+                                value={data.Username} 
+                                onChange={handleChange}
                                 className={styles.inforInput}
                                 placeholder='Tài khoản'
                             />
@@ -113,7 +131,8 @@ const Register = () => {
 
                         <Form.Item
                             label='Email' required
-                            rules={[{ required: true, message: 'Vui lòng nhập vào email!' }]}
+                            validateStatus={errors.Email ? 'error' : ''}
+                            help={errors.Email || ''}
                         >
                             <Input
                                 name='Email'
@@ -125,7 +144,8 @@ const Register = () => {
 
                         <Form.Item
                             label='Mật khẩu' required
-                            rules={[{ required: true, message: 'Vui lòng nhập vào mật khẩu!' }]}
+                            validateStatus={errors.Password ? 'error' : ''}
+                            help={errors.Password || ''}
                         >
                             <Input.Password
                                 name='Password'
@@ -137,7 +157,8 @@ const Register = () => {
 
                         <Form.Item
                             label='Họ và tên' required
-                            rules={[{ required: true, message: 'Vui lòng nhập vào họ tên!' }]}
+                            validateStatus={errors.FullName ? 'error' : ''}
+                            help={errors.FullName || ''}
                         >
                             <Input
                                 name='FullName'
@@ -148,7 +169,8 @@ const Register = () => {
 
                         <Form.Item
                             label='Số điện thoại' required
-                            rules={[{ required: true, message: 'Vui lòng nhập vào số điện thoại!' }]}
+                            validateStatus={errors.PhoneNumber ? 'error' : ''}
+                            help={errors.PhoneNumber || ''}
                         >
                             <Input
                                 name='PhoneNumber'
@@ -198,6 +220,14 @@ const Register = () => {
                         </Form.Item>
                     </Form>
 
+                    <Flex align='center' justify='center' style={{ width: '100%' }}>
+                        <Text>Bạn đã có tài khoản? </Text>
+                        <Button type='link' className={styles.linkBtn}>
+                            <Link to='/'>
+                                Đăng nhập
+                            </Link>
+                        </Button>
+                    </Flex>
                     <Divider className={styles.divider}>Hoặc</Divider>
                 </Flex>
             </Flex>

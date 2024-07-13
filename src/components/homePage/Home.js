@@ -1,9 +1,14 @@
 import { useState } from 'react'
-import { Flex, Layout, Typography, Menu, Input, Card } from "antd";
+import { Routes, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { Flex, Layout, Typography, Menu, Input, Card, Avatar, Modal } from "antd";
 import { BarChartOutlined, UserOutlined, BlockOutlined, DeliveredProcedureOutlined, ProfileOutlined, HomeOutlined, UsergroupAddOutlined, ApartmentOutlined, SearchOutlined } from "@ant-design/icons";
 
 import styles from './Home.module.scss'
 import logo from '../../assets/images/logoPrint.png'
+import avatar from '../../assets/images/avatars/avatar-10.png'
+import MainContent from './MainContent';
+import Profile from '../profile/Profile';
 
 const { Title, Text } = Typography
 const Home = () => {
@@ -66,95 +71,20 @@ const Home = () => {
             </Flex>
             <Flex justify='space-around' className={styles.contentContainer}>
                 <Flex vertical className={styles.content}>
-                    <Flex className={styles.header} align='center'>
+                    <Flex gap='small' className={styles.header} align='center'>
                         <Input className={styles.search} size='large' placeholder='Search' prefix={<SearchOutlined />} />
+                        <Link to = './profile'>
+                            <img src={avatar}
+                                className={styles.avatar}
+                            />
+                        </Link>
                     </Flex>
-                    <Flex wrap gap='large' justify='space-between' style={{ padding: '16px' }}>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                        <Card
-                            hoverable
-                            style={{ width: '30%', backgroundColor: '#2f3349' }}
-                            cover={
-                                <img src={logo} />
-                            }
-                        >
-                            <Flex vertical>
-                                <Title level={3}>In Thiệp cưới</Title>
-                                <Text>Write descritption here. something more about this object</Text>
-                            </Flex>
-                        </Card>
-                    </Flex>
+                    
+                    {/* <MainContent /> */}
+                    <Profile />
+                    {/* <Routes>
+                        <Route path='/home' element={<MainContent />}></Route>
+                    </Routes> */}
                 </Flex>
             </Flex>
         </>

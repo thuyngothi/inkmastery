@@ -19,7 +19,8 @@ const Login = () => {
             console.log(response);
             
             if(response && response.status === 200){
-                const res = response.data;
+                const res = response.data.data;
+                console.log(res)
 
                 if(!localStorage.getItem("accessToken")){
                     console.log(localStorage.getItem("accessToken"));
