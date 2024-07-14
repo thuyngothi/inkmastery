@@ -21,6 +21,7 @@ const ForgetPass = () => {
             navigate('/updatePassword')
         } catch (error) {
             console.error('Lỗi: ', error);
+            message.error('Update failed!');
         }
 
         setLoading(false);
