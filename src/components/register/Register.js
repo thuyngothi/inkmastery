@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import moment from 'moment';
 
-import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker } from 'antd'
+import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, message } from 'antd'
 
 import styles from './Register.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-register-illustration-dark.png'
@@ -42,7 +42,7 @@ const Register = () => {
     };
 
     const handleSubmit = async () => {
-    
+
         const formData = new FormData();
         formData.append('Username', data.Username);
         formData.append('Email', data.Email);
@@ -78,10 +78,18 @@ const Register = () => {
                     'Content-Type': 'multipart/form-data'
                 }
             });
-            console.log('Registration successful:', response.data);
-            navigate('/')
+            console.log(response);
+            console.log(response.status)
+            if (response.data.status === 200) {
+                message.success('Registration successful!');
+                console.log('Registration successful:', response.data);
+                navigate('/')
+            } else{
+                message.error(response.data.message)
+            }
         } catch (error) {
             console.error('Registration failed:', error);
+            message.error('Register failed!');
         }
 
         setLoading(false)
@@ -96,7 +104,7 @@ const Register = () => {
                         backgroundColor: '#202336',
                         padding: '40px 0',
                     }}>
-                    <img style={{ maxWidth: '60%'}} src={login_img}></img>
+                    <img style={{ maxWidth: '60%' }} src={login_img}></img>
                 </Space>
 
                 <Flex align='flex-start' vertical className={styles.content}>
@@ -117,12 +125,12 @@ const Register = () => {
                             label='Tài khoản' required
                             validateStatus={errors.Username ? 'error' : ''}
                             help={errors.Username || ''}
-                           // rules={[{ required: true, message: 'Vui lòng nhập vào tên tài khoản!' }]}
+                        // rules={[{ required: true, message: 'Vui lòng nhập vào tên tài khoản!' }]}
                         >
                             <Input
                                 name='Username'
                                 // {...register('Username', { required: 'Vui lòng nhập vào tên tại khoản!' })}
-                                value={data.Username} 
+                                value={data.Username}
                                 onChange={handleChange}
                                 className={styles.inforInput}
                                 placeholder='Tài khoản'
