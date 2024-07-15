@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space } from 'antd'
+import { Flex, Typography, Form, Input, Button, Divider, message, Space, Col } from 'antd'
 
 import styles from './ForgotPass.module.scss'
 import forpass_img from '../../assets/images/pages/auth-v2-forgot-password-illustration-dark.png'
@@ -26,12 +26,11 @@ const ForgetPass = () => {
 
         setLoading(false);
     }
-    //$2a$11$rGApX9bDrReF6O1ZTiSgJ.FOMirzGjDLobUGufhbMciez61m4CEjC
 
     return (
         <>
-            <Flex className={styles.container}>
-                <Space
+            <Flex className={styles.container} wrap>
+                <Col xs={24} lg={14} xl={16}
                     justify='center'
                     style={{
                         width: '65%',
@@ -39,11 +38,13 @@ const ForgetPass = () => {
                         padding: '40px 0'
                     }}>
                     <img style={{ maxWidth: '60%' }} src={forpass_img}></img>
-                </Space>
+                </Col>
 
-                <Flex justify='center' align='flex-start' vertical className={styles.content}>
-                    <img style={{ width: '40%' }} src={logo}></img>
-                    <Title style={{ color: '#c7cbe3' }} level={4}>Quên mật khẩu?</Title>
+                <Col xs={24} lg={10} xl={8} justify='center' className={styles.content}>
+                    <Flex vertical align='flex-start'>
+                        <img style={{ width: '40%' }} src={logo}></img>
+                        <Title style={{ color: '#c7cbe3' }} level={4}>Quên mật khẩu?</Title>
+                    </Flex>
                     <Form
                         className={styles.formContainer}
                         layout='vertical'
@@ -55,11 +56,11 @@ const ForgetPass = () => {
                             required
                             rules={[{ required: true, message: 'Please input your email!' }]}
                         >
-                            <Input 
-                            name='email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className={styles.userInput} placeholder='Email' />
+                            <Input
+                                name='email'
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className={styles.userInput} placeholder='Email' />
                         </Form.Item>
 
                         <Form.Item>
@@ -78,7 +79,7 @@ const ForgetPass = () => {
                             Quay lại đăng nhập
                         </Link>
                     </Button>
-                </Flex>
+                </Col>
             </Flex>
         </>
     )

@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import moment from 'moment';
 
-import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, message } from 'antd'
+import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, message, Col } from 'antd'
 
 import styles from './Register.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-register-illustration-dark.png'
@@ -84,7 +84,7 @@ const Register = () => {
                 message.success('Registration successful!');
                 console.log('Registration successful:', response.data);
                 navigate('/')
-            } else{
+            } else {
                 message.error(response.data.message)
             }
         } catch (error) {
@@ -97,17 +97,17 @@ const Register = () => {
 
     return (
         <>
-            <Flex className={styles.container}>
-                <Space
+            <Flex className={styles.container} wrap>
+                <Col xs={24} lg={14} xl={16}
                     style={{
                         width: '65%',
                         backgroundColor: '#202336',
                         padding: '40px 0',
                     }}>
                     <img style={{ maxWidth: '60%' }} src={login_img}></img>
-                </Space>
+                </Col>
 
-                <Flex align='flex-start' vertical className={styles.content}>
+                <Col xs={24} lg={10} xl={8} className={styles.content}>
                     <Flex align='center'>
                         <img src={logo} style={{ width: '20%' }}></img>
                         <Title level={3} style={{ color: '#c7cbe3' }}>InkMastery</Title>
@@ -237,7 +237,7 @@ const Register = () => {
                         </Button>
                     </Flex>
                     <Divider className={styles.divider}>Hoặc</Divider>
-                </Flex>
+                </Col>
             </Flex>
         </>
     )

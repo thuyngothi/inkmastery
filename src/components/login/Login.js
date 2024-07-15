@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space } from 'antd'
+import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space, Col } from 'antd'
 
 import styles from './Login.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-login-illustration-dark.png'
@@ -14,15 +14,15 @@ const Login = () => {
 
     const parseJwt = (token) => {
         let base64Url = token.split(".")[1];
-        let base64 = base64Url.replace(/-/g, "+").replace(/_/g,"/");
+        let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
         let jsonPayload = decodeURIComponent(
             window
-            .atob(base64)
-            .split("")
-            .map(c => {
-                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-            })
-            .join("")
+                .atob(base64)
+                .split("")
+                .map(c => {
+                    return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+                })
+                .join("")
         );
 
         return JSON.parse(jsonPayload);
@@ -41,18 +41,18 @@ const Login = () => {
                 if (!localStorage.getItem("accessToken")) {
                     console.log(localStorage.getItem("accessToken"));
                     localStorage.setItem("token", res.accessToken);
-                    localStorage.setItem("refresh", res.refreshToken);   
+                    localStorage.setItem("refresh", res.refreshToken);
 
                     const accessToken = localStorage.getItem('token');
                     const decoded = parseJwt(accessToken)
                     console.log(decoded)
-                    localStorage.setItem('userInfor', JSON.stringify(decoded))   
+                    localStorage.setItem('userInfor', JSON.stringify(decoded))
 
                     message.success('Login successful!')
                     navigate('/home');
                 }
 
-                const userInfor = JSON.parse(localStorage.getItem('userInfor'));
+                // const userInfor = JSON.parse(localStorage.getItem('userInfor'));
                 // if(userInfor && userInfor.Permission){
                 //     const allRoles = ['Admin', 'Leader', 'Designer', 'Employee'];
                 //     const userRoles = userInfor.Permission;
@@ -60,18 +60,22 @@ const Login = () => {
                 //     let routeName;
                 //     if(
                 //         userRoles.length === allRoles.length || 
-                //         userRoles.incli
-                //     )
+                //         userRoles.includes('Admin')
+                //     ){
+                //         routeName = '/home';
+                //     }else if(userRoles.includes('Employee')){
+                //         routeName = ''
+                //     }
                 // }
 
-            }else (
+            } else (
                 message.error(response.data.message)
             )
 
         } catch (error) {
             console.error(error);
             message.error('login failed!');
-        }       
+        }
 
         setLoading(false);
 
@@ -79,21 +83,23 @@ const Login = () => {
 
     return (
         <>
-            <Flex className={styles.container}>
-                <Space
+            <Flex className={styles.container} wrap>
+                <Col xs={24} lg={14} xl={16}
                     justify='center'
                     style={{
-                        width: '65%',
+                        // width: '65%',
                         backgroundColor: '#202336',
                         padding: '40px 0'
                     }}>
                     <img style={{ maxWidth: '60%' }} src={login_img}></img>
-                </Space>
+                </Col>
 
-                <Flex align='flex-start' vertical className={styles.content}>
-                    <img style={{ width: '30%' }} src={logo}></img>
-                    <Title style={{ color: '#c7cbe3' }} level={4}>Chào Mừng Đến Với InkMastery!</Title>
-                    <Text style={{ textAlign: 'left' }}>Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu cuộc phiêu lưu</Text>
+                <Col xs={24} lg={10} xl={8} className={styles.content}>
+                    <Flex vertical align='flex-start'>
+                        <img style={{ width: '30%' }} src={logo}></img>
+                        <Title style={{ color: '#c7cbe3' }} level={4}>Chào Mừng Đến Với InkMastery!</Title>
+                        <Text style={{ textAlign: 'left' }}>Vui lòng đăng nhập vào tài khoản của bạn và bắt đầu cuộc phiêu lưu</Text>
+                    </Flex>
                     <Form
                         className={styles.formLogin}
                         layout='vertical'
@@ -158,7 +164,7 @@ const Login = () => {
                     <Flex>
 
                     </Flex>
-                </Flex>
+                </Col>
             </Flex>
         </>
     )

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 
-import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space } from 'antd'
+import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space, Col } from 'antd'
 
 import styles from './ForgotPass.module.scss'
 import forpass_img from '../../assets/images/pages/auth-v2-forgot-password-illustration-dark.png'
@@ -66,8 +66,8 @@ const UpdatePass = () => {
 
     return (
         <>
-            <Flex className={styles.container}>
-                <Space
+            <Flex className={styles.container} wrap>
+                <Col xs={24} lg={14} xl={16}
                     justify='center'
                     style={{
                         width: '65%',
@@ -75,13 +75,15 @@ const UpdatePass = () => {
                         padding: '40px 0'
                     }}>
                     <img style={{ maxWidth: '60%' }} src={forpass_img}></img>
-                </Space>
+                </Col>
 
-                <Flex align='flex-start' vertical className={styles.content}>
-                    <img style={{ width: '40%' }} src={logo}></img>
-                    <Title style={{ color: '#c7cbe3' }} level={4}>Cập nhật mật khẩu mới</Title>
-                    <Text>Vui lòng kiểm tra email để lấy mã xác minh</Text>
-                    <Text>Thời gian còn lại: <span style={{ color: 'yellow' }}>{countdown} </span>giây</Text>
+                <Col xs={24} lg={10} xl={8} align='flex-start' className={styles.content}>
+                    <Flex vertical align='flex-start'>
+                        <img style={{ width: '40%' }} src={logo}></img>
+                        <Title style={{ color: '#c7cbe3' }} level={4}>Cập nhật mật khẩu mới</Title>
+                        <Text>Vui lòng kiểm tra email để lấy mã xác minh</Text>
+                        <Text>Thời gian còn lại: <span style={{ color: 'yellow' }}>{countdown} </span>giây</Text>
+                    </Flex>
                     <Form
                         className={styles.formContainer}
                         layout='vertical'
@@ -95,38 +97,38 @@ const UpdatePass = () => {
                         >
                             <Input
                                 name='confirmCode'
-                                className={styles.userInput} placeholder='----' 
-                                value={formData.confirmCode} 
-                                onChange={handleChange} 
-                                />
+                                className={styles.userInput} placeholder='----'
+                                value={formData.confirmCode}
+                                onChange={handleChange}
+                            />
                         </Form.Item>
 
                         <Form.Item
                             label='Mật khẩu mới'
                             validateStatus={errors.password ? 'error' : ''}
                             help={errors.password || ''}
-                            //rules={[{ required: true, message: 'Please input your password!' }]}
+                        //rules={[{ required: true, message: 'Please input your password!' }]}
                         >
                             <Input
                                 name='password'
-                                className={styles.userInput} placeholder='Password' 
-                                value={formData.password} 
-                                onChange={handleChange} 
-                                />
+                                className={styles.userInput} placeholder='Password'
+                                value={formData.password}
+                                onChange={handleChange}
+                            />
                         </Form.Item>
 
                         <Form.Item
                             label='Nhập lại mật khẩu'
                             validateStatus={errors.confirmPassword ? 'error' : ''}
                             help={errors.confirmPassword || ''}
-                            //rules={[{ required: true, message: 'Please input confirm password!' }]}
+                        //rules={[{ required: true, message: 'Please input confirm password!' }]}
                         >
                             <Input
                                 name='confirmPassword'
-                                className={styles.userInput} placeholder='Confirm password' 
-                                value={formData.confirmPassword} 
-                                onChange={handleChange} 
-                                />
+                                className={styles.userInput} placeholder='Confirm password'
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
+                            />
                         </Form.Item>
 
                         <Form.Item>
@@ -145,7 +147,7 @@ const UpdatePass = () => {
                             Quay lại quên mật khẩu
                         </Link>
                     </Button>
-                </Flex>
+                </Col>
             </Flex>
         </>
     )
