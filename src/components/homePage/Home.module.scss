@@ -7,7 +7,7 @@ $secondBgColor: #393d52;
 $thirdBgColor: #2f3349;
 
 .sidebar {
-    width: 25vw;
+    width: 20vw;
     background-color: $secondBgColor ;
     display: inline-block;
     float: left;
@@ -37,7 +37,7 @@ $thirdBgColor: #2f3349;
 // =============== Content CSS =======================
 .contentContainer {
     background-color: $mainBgColor;
-    width: 75vw;
+    width: 80vw;
     float: right;
     // display: inline-block;
 }
@@ -73,4 +73,26 @@ $thirdBgColor: #2f3349;
     height: 40px;
     border-radius: 50%;
     cursor: pointer;
+}
+
+@media (max-width: 768px){
+    .sidebar{
+        width: 25vw;
+    }
+    .sidebar img {
+        width: 60%;
+    }
+    .logoText {
+        font-size: 20px;
+        font-weight: 600;
+    }
+    .contentContainer {
+        width: 75vw;
+    }
+}
+
+@media (max-width: 992px){
+    .sidebar img {
+        width: 60%;
+    }
 }
