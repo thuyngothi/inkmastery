@@ -1,15 +1,16 @@
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { Flex, Button, Typography, Divider, Form, Input, Row } from "antd";
+import { Flex, Button, Typography, Divider, Form, Input, Row, Col } from "antd";
 import { useEffect, useState } from "react";
 import clsx from "clsx";
-import axios from "axios";
 
+import Infor from './Infor.js'
+import ChangePass from './ChangePass.js'
 import styles from './Profile.module.scss'
 
 import avatar from '../../assets/images/avatars/avatar-10.png'
 
 const { Title } = Typography
-const Profile = () => {
+const Profile = ({userInfor}) => {
     const [focus, setFocus] = useState('profile')
     useEffect(() => {
         if (focus === 'profile') {
@@ -47,38 +48,8 @@ const Profile = () => {
                         Đổi Mật Khẩu
                     </Button>
                 </Flex>
-
-                <Flex vertical align='flex-start' className={styles.profileInfor}>
-                    <Flex vertical gap='small' align='flex-start' style={{ padding: '16px' }}>
-                        <Title level={4} style={{ color: '#fff' }}>Thông tin cá nhân</Title>
-                        <Flex>
-                            <img src={avatar}></img>
-                        </Flex>
-                    </Flex>
-                    <Divider style={{ backgroundColor: '#686d8a', margin: '16px 0' }} />
-                    <Form style={{ width: '100%' }}
-                        wrapperCol={{ span: 24 }}
-                        layout="vertical"
-                        className={styles.formProfile}
-                    >
-                        <Flex justify="space-around">
-                            <Form.Item style={{width:'45%'}} label='Tài khoản'>
-                                <Input name='Username' />
-                            </Form.Item>
-                            <Form.Item style={{width:'45%'}} label='Họ và tên'>
-                                <Input name='FullName' />
-                            </Form.Item>
-                        </Flex>
-                        <Flex justify="space-around">
-                            <Form.Item style={{width:'45%'}} label='Tài khoản'>
-                                <Input name='Username' />
-                            </Form.Item>
-                            <Form.Item style={{width:'45%'}} label='Họ và tên'>
-                                <Input name='FullName' />
-                            </Form.Item>
-                        </Flex>
-                    </Form>
-                </Flex>
+                <ChangePass />
+                <Infor userInfor={userInfor} />
             </Flex>
         </>
     )
