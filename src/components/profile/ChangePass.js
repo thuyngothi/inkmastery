@@ -88,39 +88,28 @@ const ChangePass = () => {
                     className={styles.formProfile}
                     onFinish={handleSubmit}
                 >
-                    <Flex style={{ paddingLeft: '16px' }} justify="flex-start" wrap>
+                    <Flex justify="flex-start" wrap>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Mật khẩu cũ'
                                 validateStatus={error.oldPassword ? 'error' : ''}
                                 help={error.oldPassword || ''}
                             >
-                                <Input.Password className="userInput" size="large" 
+                                <Input.Password className={styles.userInput} size="large" 
                                     name='oldPassword'
                                     value={formData.oldPassword}
                                     onChange={handleChange}
                                 />
                             </Form.Item>
-                            {/* <Form.Item
-                                label='Mật khẩu' required
-                                validateStatus={error.oldPassword ? 'error' : ''}
-                                help={error.oldPassword || ''}
-                            >
-                                <Input.Password
-                                    name='oldPassword'
-                                    value={formData.oldPassword} onChange={handleChange}
-                                    className='userInput'
-                                    placeholder='Mật khẩu' />
-                            </Form.Item> */}
                         </Col>
                     </Flex>
 
-                    <Flex justify="space-around" wrap>
+                    <Flex justify="space-between" wrap>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Mật khẩu mới'
                                 validateStatus={error.newPassword ? 'error' : ''}
                                 help={error.newPassword || ''}
                             >
-                                <Input.Password className="userInput" size="large"
+                                <Input.Password className={styles.userInput} size="large"
                                     name='newPassword'
                                     value={formData.newPassword}
                                     onChange={handleChange}
@@ -132,7 +121,7 @@ const ChangePass = () => {
                                 validateStatus={error.confirmPassword ? 'error' : ''}
                                 help={error.confirmPassword || ''}
                             >
-                                <Input.Password className="userInput" size="large"
+                                <Input.Password className={styles.userInput} size="large"
                                     name='confirmPassword'
                                     value={formData.confirmPassword}
                                     onChange={handleChange}

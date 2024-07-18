@@ -85,10 +85,21 @@ $BgThirdColor: #2f3349;
   color: $mainColor;
 }
 
-// Modal Css
-.ant-modal-content {
-  
+// Table CSS
+.ant-table {
+  background-color: $BgSecondColor !important;
+  color: $mainColor !important;
 }
-.ant-modal-content input {
+.ant-table .ant-table-thead >tr >th {
+  background-color: $BgSecondColor !important;
+  border-bottom: 1px solid #6a7190 !important;
+  color: $mainColor !important;
+}
+.ant-table-tbody td{
+  border-bottom: 1px solid #6a7190 !important;
+}
+.ant-table-tbody .ant-table-row:hover td{
+  background-color: #53586f !important;
+  color: #fff;
+}
 
-}

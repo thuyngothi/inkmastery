@@ -1,4 +1,25 @@
+@import '../colors';
 
 .employeeContainer {
     padding: 16px 0;
+}
+
+
+.btn {
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    &:hover {
+        opacity: .7;
+    }
+}
+.changeManagementBtn {
+    background-color: $secondColor;
+}
+.addRoleBtn {
+    background-color: #15b468;
+}
+
+.deleteBtn{
+    background-color: #fa6456;
 }
