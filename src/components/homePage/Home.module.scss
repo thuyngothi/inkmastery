@@ -1,14 +1,8 @@
-$mainColor: #c7cbe3;
-$fistColor:#7367f0; 
-$secondColor: #9087f3;
-
-$mainBgColor: #202336;
-$secondBgColor: #393d52;
-$thirdBgColor: #2f3349;
+@import '../colors';
 
 .sidebar {
-    width: 20vw;
-    background-color: $secondBgColor ;
+    width:20%;
+    background-color: $BgSecondColor ;
     display: inline-block;
     float: left;
     height: 100vh;
@@ -27,35 +21,35 @@ $thirdBgColor: #2f3349;
 }
 
 .sidebarMenu {
-    background-color: $secondBgColor;
+    background-color: $BgSecondColor;
 }
 .sidebarMenu li {
+    padding-left: 16px !important;
     color: $mainColor !important;
     text-align: left;
 }
 
 // =============== Content CSS =======================
 .contentContainer {
-    background-color: $mainBgColor;
-    width: 80vw;
+    background-color: $BgMainColor;
+    width: 80%;
     float: right;
-    // display: inline-block;
 }
 .content {
-    width: 80%;
+    width: 95%;
     padding: 16px 0;
 }
 
 .header {
     height: 65px;
-    background-color: $thirdBgColor;
+    background-color: $BgThirdColor;
     border-radius: 8px;
     padding: 8px;
 }
 .search {
     height: 50px;
     width: 80%;
-    background-color: $thirdBgColor !important;
+    background-color: $BgThirdColor !important;
     color: $mainColor;
     border: none;
     font-size: 18px;
@@ -75,9 +69,15 @@ $thirdBgColor: #2f3349;
     cursor: pointer;
 }
 
+.logoutBtn {
+    position: absolute;
+    bottom: 30px;
+    left: 16px;
+}
+
 @media (max-width: 768px){
     .sidebar{
-        width: 25vw;
+        width: 25%;
     }
     .sidebar img {
         width: 60%;
@@ -87,7 +87,7 @@ $thirdBgColor: #2f3349;
         font-weight: 600;
     }
     .contentContainer {
-        width: 75vw;
+        width: 755;
     }
 }
 

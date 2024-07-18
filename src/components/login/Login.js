@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
+import clsx from 'clsx'
 
 import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space, Col } from 'antd'
 
@@ -84,14 +85,16 @@ const Login = () => {
     return (
         <>
             <Flex className={styles.container} wrap>
-                <Col xs={24} lg={14} xl={16}
-                    justify='center'
+                <Col xs={24} lg={14} xl={16}                   
                     style={{
-                        // width: '65%',
+                        display:'flex',
+                        alignItems: 'center',
+                        justifyContent:'center',
+                        height: '100%',
                         backgroundColor: '#202336',
                         padding: '40px 0'
                     }}>
-                    <img style={{ maxWidth: '60%' }} src={login_img}></img>
+                    <img style={{ maxWidth:'60%' }} src={login_img}></img>
                 </Col>
 
                 <Col xs={24} lg={10} xl={8} className={styles.content}>
@@ -111,15 +114,16 @@ const Login = () => {
                     >
                         <Form.Item
                             label='Tài khoản'
+                            required
                             name='username'
-                        // rules={[{ required: true, message: 'Please input your username!' }]}
+                            rules={[{required:true, message:'vui lòng nhập vào tên tài khoản!'}]}
                         >
                             <Input className={styles.userInput} placeholder='Tài khoản' />
                         </Form.Item>
                         <Form.Item
-                            label='Mật khẩu'
-                            name='password'
-                        // rules={[{ required: true, message: 'Please input your password!' }]}
+                            label='Mật khẩu' required
+                            name='password'  
+                            rules={[{required:true, message: 'Vui lòng nhập vào mật khẩu!'}]}                                  
                         >
                             <Input.Password className={styles.userInput} placeholder='Mật khẩu' />
                         </Form.Item>
@@ -145,7 +149,7 @@ const Login = () => {
                             <Button size='middle'
                                 htmlType='submit'
                                 loading={loading}
-                                className={styles.loginBtn}
+                                className={clsx('submitBtn', styles.loginBtn)}
                             >
                                 Đăng Nhập
                             </Button>

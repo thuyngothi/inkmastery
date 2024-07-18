@@ -7,6 +7,7 @@ import { Flex, Typography, Form, Input, Button, Divider, message, Space, Col } f
 import styles from './ForgotPass.module.scss'
 import forpass_img from '../../assets/images/pages/auth-v2-forgot-password-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
+import clsx from 'clsx'
 const { Title, Text } = Typography
 
 const ForgetPass = () => {
@@ -67,7 +68,7 @@ const ForgetPass = () => {
                             <Button size='middle'
                                 htmlType='submit'
                                 loading={loading}
-                                className={styles.submitBtn}
+                                className={clsx('submitBtn', styles.submitBtn)}
                             >
                                 Xác Nhận
                             </Button>

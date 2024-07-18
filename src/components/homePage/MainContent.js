@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Flex, Layout, Typography, Menu, Input, Card, Avatar, Modal } from "antd";
 
 import styles from './Home.module.scss'

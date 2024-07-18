@@ -5,11 +5,12 @@ $thirdColor: #d6d9e485;
 
 $BgMainColor: #202336;
 $BgSecondColor: #393d52;
-$thirdBgColor: #2f3349;
+$BgthirdColor: #2f3349;
 
 .profileContainer {
     font-size: 20px;
     padding: 16px 0;
+    height: 100vh;
 }
 
 .btn {
@@ -29,7 +30,7 @@ $thirdBgColor: #2f3349;
 
 .profileInfor {
     background-color: $BgSecondColor;
-    // padding: 16px;
+    padding: 16px 0;
     border-radius: 8px;
 }
 .profileInfor img {
@@ -44,7 +45,6 @@ $thirdBgColor: #2f3349;
     background-color: $BgSecondColor;
     color: $mainColor;
     border: 1px solid $secondColor;
-    width: 100%;
     &:hover {
         background-color: $BgSecondColor;
         border: 1px solid $secondColor;
@@ -56,4 +56,15 @@ $thirdBgColor: #2f3349;
     &::placeholder{
         color: $thirdColor !important;
     }
+}
+
+.refreshBtn {
+    background-color: #4c5066;
+    border: none;
+    color: $mainColor;
+    font-weight: 500;
+   &:hover {
+    color: #fff !important;
+    background-color: $secondColor !important;
+  }
 }

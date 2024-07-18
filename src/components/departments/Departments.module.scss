@@ -1,0 +1,37 @@
+@import '../colors';
+
+.departmentContainer {
+    padding: 16px 0;
+    height: 100vh;
+}
+
+.department {
+    background-color: $BgThirdColor;
+    border-radius: 8px;
+}
+.btn {
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    cursor: pointer;
+    &:hover {
+        opacity: .7;
+    }
+}
+.createBtn {
+    background-color: $secondColor;
+    font-size: 25px;
+    width: 30px;
+    height: 30px;
+}
+.editBtn {
+    background-color: #15b468;  
+}
+.kpiBtn {
+    background-color: $secondColor;
+}
+.deleteBtn {
+    background-color: #fa6456;
+}

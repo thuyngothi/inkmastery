@@ -51,14 +51,4 @@ $thirdColor: #d6d9e485;
 
 .submitBtn {
     width: 100%;
-    background-color: $secondColor;
-    border: none;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    &:hover {
-        color: #fff !important;
-        font-weight: 600;
-        background-color: $fistColor !important;
-    }
 }
