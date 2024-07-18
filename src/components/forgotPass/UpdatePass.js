@@ -7,10 +7,18 @@ import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Spac
 import styles from './ForgotPass.module.scss'
 import forpass_img from '../../assets/images/pages/auth-v2-forgot-password-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
+import clsx from 'clsx'
 const { Title, Text } = Typography
 
 const UpdatePass = () => {
     const [countdown, setCountdown] = useState(60)
+    const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        confirmCode: '',
+        password: '',
+        confirmPassword: ''
+    });
 
     useEffect(() => {
         if (countdown > 0) {
@@ -19,14 +27,6 @@ const UpdatePass = () => {
             return () => clearInterval(timerId)
         }
     }, [countdown])
-
-    const [formData, setFormData] = useState({
-        confirmCode: '',
-        password: '',
-        confirmPassword: ''
-    });
-    const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -84,6 +84,7 @@ const UpdatePass = () => {
                         <Text>Vui lòng kiểm tra email để lấy mã xác minh</Text>
                         <Text>Thời gian còn lại: <span style={{ color: 'yellow' }}>{countdown} </span>giây</Text>
                     </Flex>
+
                     <Form
                         className={styles.formContainer}
                         layout='vertical'
@@ -135,7 +136,7 @@ const UpdatePass = () => {
                             <Button size='middle'
                                 htmlType='submit'
                                 // loading={loading}
-                                className={styles.submitBtn}
+                                className={clsx('submitBtn', styles.submitBtn)}
                             >
                                 Xác Nhận
                             </Button>

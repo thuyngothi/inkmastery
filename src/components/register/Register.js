@@ -8,6 +8,7 @@ import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, mess
 import styles from './Register.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-register-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
+import clsx from 'clsx';
 const { Title, Text, Paragraph } = Typography
 
 const Register = () => {
@@ -42,7 +43,6 @@ const Register = () => {
     };
 
     const handleSubmit = async () => {
-
         const formData = new FormData();
         formData.append('Username', data.Username);
         formData.append('Email', data.Email);
@@ -112,6 +112,7 @@ const Register = () => {
                         <img src={logo} style={{ width: '20%' }}></img>
                         <Title level={3} style={{ color: '#c7cbe3' }}>InkMastery</Title>
                     </Flex>
+                    
                     <Form
                         className={styles.formRegister}
                         layout='vertical'
@@ -221,7 +222,7 @@ const Register = () => {
                             <Button size='middle'
                                 htmlType='submit'
                                 loading={loading}
-                                className={styles.registerBtn}
+                                className={clsx('submitBtn',styles.registerBtn)}
                             >
                                 Đăng Ký
                             </Button>

@@ -48,8 +48,9 @@ const Profile = ({userInfor}) => {
                         Đổi Mật Khẩu
                     </Button>
                 </Flex>
-                <ChangePass />
-                <Infor userInfor={userInfor} />
+
+                {focus === 'profile' && <Infor userInfor={userInfor} />}
+                {focus === 'changePass' && <ChangePass />}
             </Flex>
         </>
     )

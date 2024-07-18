@@ -1,4 +1,6 @@
-import { Flex,Typography, Divider, Form, Input, Col } from "antd";
+import { Flex,Typography, Divider, Form, Input, Col, Button } from "antd";
+import { useState } from "react";
+import clsx from "clsx";
 
 import styles from './Profile.module.scss'
 
@@ -6,6 +8,8 @@ import avatar from '../../assets/images/avatars/avatar-10.png'
 
 const { Title } = Typography
 const Infor = ({userInfor}) => {
+
+    const [infor, setInfor] = useState(userInfor);
     return (
         <>
             <Flex vertical align='flex-start' className={styles.profileInfor}>
@@ -24,12 +28,12 @@ const Infor = ({userInfor}) => {
                     <Flex justify="space-around" wrap>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Tài khoản'>
-                                <Input name='Username' value={userInfor.UserName} />
+                                <Input size="large" name='Username' value={infor.UserName} />
                             </Form.Item>
                         </Col>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Họ và tên'>
-                                <Input name='FullName' value={userInfor.FullName} />
+                                <Input size="large" name='FullName' value={infor.FullName} />
                             </Form.Item>
                         </Col>
                     </Flex>
@@ -37,12 +41,12 @@ const Infor = ({userInfor}) => {
                     <Flex justify="space-around" wrap>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Email'>
-                                <Input name='Email' value={userInfor.Email} />
+                                <Input size="large" name='Email' value={infor.Email} />
                             </Form.Item>
                         </Col>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Số điện thoại'>
-                                <Input name='PhoneNumber' value={userInfor.PhoneNumber} />
+                                <Input size="large" name='PhoneNumber' value={infor.PhoneNumber} />
                             </Form.Item>
                         </Col>
                     </Flex>
@@ -50,15 +54,22 @@ const Infor = ({userInfor}) => {
                     <Flex justify="space-around" wrap>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Ngày sinh'>
-                                <Input name='DateOfBirth' />
+                                <Input size="large" name='DateOfBirth' />
                             </Form.Item>
                         </Col>
                         <Col xs={23} lg={11}>
                             <Form.Item label='Giới tính'>
-                                <Input name='Gender' />
+                                <Input size="large" name='Gender' />
                             </Form.Item>
                         </Col>
                     </Flex>
+                    <Form.Item style={{textAlign:'left', padding:'0 16px'}}>
+                        <Button
+                            htmlType="submit"
+                            size="large"
+                            className='submitBtn'
+                        >Cập nhật</Button>
+                    </Form.Item>
                 </Form>
             </Flex>
         </>

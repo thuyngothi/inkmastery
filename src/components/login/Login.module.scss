@@ -5,16 +5,18 @@ $thirdColor: #d6d9e485;
 
 $BgMainColor: #202336;
 $BgSecondColor: #393d52;
-$thirdBgColor: #2f3349;
+$BgThirdColor: #2f3349;
 
 .container {
     background-color: $BgSecondColor;
     padding: 24px;
+    height: 100vh;
 }
 
 .content {
     width: 35%;
     padding: 32px;
+    // background-color: $BgSecondColor;
 }
 
 .formLogin {
@@ -58,16 +60,6 @@ $thirdBgColor: #2f3349;
 
 .loginBtn {
     width: 100%;
-    background-color: $secondColor;
-    border: none;
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    &:hover {
-        color: #fff !important;
-        font-weight: 600;
-        background-color: $fistColor !important;
-    }
 }
 
 .divider {
@@ -77,5 +69,11 @@ $thirdBgColor: #2f3349;
     }
     &::after{
         border-block-start: 1px solid $mainColor !important;
+    }
+}
+
+@media (max-width: 992px){
+    .container {
+        height: max-content !important;
     }
 }

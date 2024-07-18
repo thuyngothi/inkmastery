@@ -1,27 +1,48 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import { Flex, Typography, Menu, Input, Card, Avatar, Modal, Col } from "antd";
+import { Flex, Typography, Menu, Input, Card, Avatar, Modal, Col, Button } from "antd";
 import { BarChartOutlined, UserOutlined, BlockOutlined, DeliveredProcedureOutlined, ProfileOutlined, HomeOutlined, UsergroupAddOutlined, ApartmentOutlined, SearchOutlined, LogoutOutlined } from "@ant-design/icons";
 
 import styles from './Home.module.scss'
 import logo from '../../assets/images/logoPrint.png'
 import avatar from '../../assets/images/avatars/avatar-10.png'
 import MainContent from './MainContent';
+
+import Dashboard from "../dashboard/Dashboard";
+import Inventory from "../inventory/Inventory"
+import Delivery from "../delivery/Delivery"
+import Projects from "../projects/Projects"
+import Employees from "../employees/Employee"
+import Customers from "../customers/Customers"
+import Department from "../departments/Departments"
 import Profile from '../profile/Profile';
-import ChangePass from '../profile/ChangePass';
+import clsx from 'clsx';
 
 const { Title, Text } = Typography
 const Home = () => {
     const [roles, setRoles] = useState([]);
+    const navigate = useNavigate();
+
+    // get user Information from Localstorage
     const userInfor = JSON.parse(localStorage.getItem('userInfor'))
 
-    useEffect(() => {       
-        if(userInfor && userInfor.Permission){
+    useEffect(() => {
+        if (userInfor && userInfor.Permission) {
             setRoles(userInfor.Permission)
         }
-    },[])
-    console.log(roles)
+        navigate('main')
+    }, [])
+
+    // Function handle Logout Logic
+    const handleLogout = () => {
+        if(localStorage.getItem('token')){
+            localStorage.removeItem('token')
+            localStorage.removeItem('refresh')
+            localStorage.removeItem('userInfor')
+        }
+        navigate('/')
+    }
 
     const menuItem = [
         {
@@ -53,7 +74,7 @@ const Home = () => {
             roles: 'Leader',
         },
         {
-            key: 'home',
+            key: 'main',
             icon: <HomeOutlined />,
             label: 'Trang chủ',
             title: 'Trang chủ',
@@ -79,54 +100,66 @@ const Home = () => {
             label: 'Quản lý phòng ban',
             title: 'Quản lý phòng ban',
             roles: 'Admin',
-        },
-        {
-            key: 'logout',
-            icon: <LogoutOutlined />,
-            label: 'Đăng xuất',
-            title: 'Đăng xuất',   
-            roles: 'Employee',                         
-        },
+        }
     ]
-
     const items = menuItem.filter((item) => {
-        console.log(roles.includes(item.roles))
         return roles.includes(item.roles)
     })
-    console.log(items)
+
 
     return (
         <>
             <Col vertical className={styles.sidebar} wrap>
-                <Flex xs={24} align="center" justify='center'wrap>
+                <Flex xs={24} align="center" justify='center' wrap>
                     <img src={logo}></img>
                     <Text className={styles.logoText}>InkMastery</Text>
                 </Flex>
 
                 <Menu
-                mode='inline'
-                defaultSelectedKeys={['1']}
-                className={styles.sidebarMenu}
-                items = {items}
-                 />
+                    mode='inline'
+                    defaultSelectedKeys={['main']}
+                    className={styles.sidebarMenu}
+                >
+                    {items.map(item => (
+                        <Menu.Item key={item.key} icon={item.icon} onClick={() => navigate(item.key)}>
+                            {item.label}
+                        </Menu.Item>
+                    ))}
+                </Menu>
+
+                <Flex>
+                    <Button size='large'
+                        className={clsx('submitBtn', styles.logoutBtn)}
+                        icon={<LogoutOutlined />}
+                        onClick={handleLogout}
+                    >
+                        Đăng xuất
+                    </Button>
+                </Flex>
+
             </Col>
             <Flex justify='space-around' className={styles.contentContainer}>
                 <Flex vertical className={styles.content}>
                     <Flex gap='small' className={styles.header} align='center'>
                         <Input className={styles.search} size='large' placeholder='Search' prefix={<SearchOutlined />} />
-                        <Link to = './profile'>
+                        <Link to='profile'>
                             <img src={avatar}
                                 className={styles.avatar}
                             />
                         </Link>
                     </Flex>
-                    
-                    {/* <MainContent /> */}
-                    <Profile userInfor={userInfor}/>                   
 
-                    {/* <Routes>
-                        <Route path='/home' element={<MainContent />}></Route>
-                    </Routes> */}
+                    <Routes>
+                        <Route path="dashboard" element={<Dashboard />} />
+                        <Route path="inventory" element={<Inventory />} />
+                        <Route path="delivery" element={<Delivery />} />
+                        <Route path="projects" element={<Projects />} />
+                        <Route path="main" element={<MainContent />} />
+                        <Route path="employees" element={<Employees />} />
+                        <Route path="customers" element={<Customers />} />
+                        <Route path="departments" element={<Department />} />
+                        <Route path="profile" element={<Profile userInfor={userInfor} />} />
+                    </Routes>
                 </Flex>
             </Flex>
         </>
