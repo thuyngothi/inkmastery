@@ -222,6 +222,15 @@ const Deparments = () => {
                                 label='Mô tả'>
                                 <TextArea />
                             </Form.Item>
+                            <Form.Item
+                                    name='managerId'
+                                    label='Quản lý'
+                                >
+                                    <Select
+                                        options={userInfors}
+                                    >
+                                    </Select>
+                                </Form.Item>
                         </Form>
                     </Modal>
 

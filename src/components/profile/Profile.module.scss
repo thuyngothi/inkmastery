@@ -30,7 +30,7 @@ $BgthirdColor: #2f3349;
 
 .profileInfor {
     background-color: $BgSecondColor;
-    padding: 16px 0;
+    padding: 16px;
     border-radius: 8px;
 }
 .profileInfor img {
@@ -67,4 +67,35 @@ $BgthirdColor: #2f3349;
     color: #fff !important;
     background-color: $secondColor !important;
   }
+}
+
+.userInput {
+    background-color: $BgSecondColor;
+    color: $mainColor;
+    border: 1px solid $secondColor;
+    width: 100%;
+    &:hover {
+        background-color: $BgSecondColor;
+        border: 1px solid $secondColor;
+    }
+    &:focus{
+        background-color: $BgSecondColor;
+        border: 1px solid $secondColor !important;
+    }
+    &:focus-within{
+        background-color: $BgSecondColor;
+        border: 1px solid $secondColor !important;
+    }
+    &::placeholder{
+        color: $thirdColor !important;
+    }
+}
+.userInput:focus-within input{
+    border: none !important;
+}
+.userInput input:hover{
+    border: none !important;
+}
+.userInput input::placeholder {
+    color: $thirdColor !important;
 }
