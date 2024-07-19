@@ -27,11 +27,30 @@ const Deparments = () => {
 
     const [formData, setFormData] = useState({})
 
-    // Logic get all users
+    // Logic change formdata when input change
+    const onChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => {
+            return {
+                ...prev,
+                [name]: value,
+            }
+        })
+    }
+    const onChangeSelect = (value) => {
+        setFormData( prev => {
+            return {
+                ...prev,
+                managerId: value,
+            }
+        })
+    }
+
+    // Logic get all Leader users
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get('https://localhost:44389/api/User/GetAllUsers')
+                const response = await axios.get('https://localhost:44389/api/User/GetAllUserContainsLeaderRole')
                 if (response && response.status === 200) {
                     setUsers(response.data)
                 } else {
@@ -44,7 +63,6 @@ const Deparments = () => {
         fetchData()
     }, [])
 
-    console.log(users)
     let userInfors = []
     const getInfor = () => {
         users.map(item => {
@@ -79,15 +97,16 @@ const Deparments = () => {
     // Logic Create New department
     const openCreate = () => setIsOpenCreate(true)
     const closeCreate = () => setIsOpenCreate(false)
-    const handleCreate = async (values) => {              
+    const handleCreate = async() => {
         try {
-            const response = await instance.post('api/Admin/CreateTeam', values)
+            const response = await instance.post('api/Admin/CreateTeam', formData)
             console.log(response)
             if (response && response.data.status === 200) {
                 message.success('Tạo mới phòng ban thành công!')
                 console.log('Tạo mới thành công: ', response.data)
                 setIsOpenCreate(false)
                 setIsChange(true)
+                setFormData({})
             } else {
                 message.error(response.data.message)
             }
@@ -100,14 +119,28 @@ const Deparments = () => {
     const openEdit = (data) => {
         setIsOpenEdit(true)
         setFormData(prev => {
-            return {...prev, 
-                id: data.id,               
+            return {
+                ...prev,
+                id: data.id,
             }
         })
     }
-    const closeEdit = () => setIsOpenEdit(false)
-    const handleEdit = (values) => {
-
+    const closeEdit = () => {
+        setIsOpenEdit(false) 
+        setFormData({})
+    }
+    const handleEdit = async (values) => {
+        try {
+            const response = await instance.put('api/Admin/UpdateTeam', formData)
+            if (response && response.status === 200) {
+                setIsChange(true)
+                setIsOpenEdit(false);
+                delete formData.id;
+                setFormData({})
+            }
+        } catch (error) {
+            console.error('Không thể update phòng ban: ', error)
+        }
     }
 
     // Logic Add KPI for department
@@ -121,22 +154,22 @@ const Deparments = () => {
     const openDelete = (data) => {
         setIsOpenDelete(true)
         setFormData(prev => {
-            return {...prev, teamId: data.id}
+            return { ...prev, teamId: data.id }
         })
     }
     const closeDelete = () => setIsOpenDelete(false)
-    const handleDelete = async() => {
-        try{
+    const handleDelete = async () => {
+        try {
             const response = await instance.delete(`/api/Admin/DeleteTeam/${formData.teamId}`)
-            if(response && response.status === 200){
+            if (response && response.status === 200) {
                 setIsChange(true);
                 setIsOpenDelete(false);
                 delete formData.teamId
                 message.success('Xóa phòng ban thành công')
-            }else(
+            } else (
                 message.error('Không thể xóa phòng ban!')
             )
-        }catch(error) {
+        } catch (error) {
             console.error('Không thể xóa phòng ban! Lỗi: ', error)
         }
     }
@@ -164,31 +197,31 @@ const Deparments = () => {
                         <Form layout="vertical" onFinish={handleCreate}>
                             <Flex justify="space-between">
                                 <Form.Item
-                                    name='name'
                                     label='Tên phòng ban'
                                     style={{
                                         width: '45%'
                                     }}
                                 >
-                                    <Input />
+                                    <Input name='name' value={formData.name} onChange={onChange} />
                                 </Form.Item>
                                 <Form.Item
-                                    name='managerId'
                                     label='Quản lý'
                                     style={{
                                         width: '45%'
                                     }}
                                 >
                                     <Select
+                                        name='managerId'
                                         options={userInfors}
+                                        value={formData.managerId}
+                                        onChange={onChangeSelect}
                                     >
                                     </Select>
                                 </Form.Item>
                             </Flex>
-                            <Form.Item
-                                name='description'
+                            <Form.Item                              
                                 label='Mô tả'>
-                                <TextArea />
+                                <TextArea name='description' value={formData.description} onChange={onChange} />
                             </Form.Item>
                             <Flex gap='middle'>
                                 <Form.Item>
@@ -208,29 +241,37 @@ const Deparments = () => {
                         className="modal"
                         open={isOpenEdit}
                         onCancel={closeEdit}
+                        footer={null}
                         title='Sửa thông tin phòng ban'
                     >
-                        <Form layout="vertical">
+                        <Form layout="vertical" onFinish={handleEdit}>
                             <Form.Item
-                                name='name'
                                 label='Tên phòng ban'
                             >
-                                <Input />
+                                <Input name='name' value={formData.name} onChange={onChange} />
                             </Form.Item>
                             <Form.Item
-                                name='description'
-                                label='Mô tả'>
-                                <TextArea />
+                                label='Mô tả'
+                            >
+                                <TextArea name='description' value={formData.description} onChange={onChange} />
                             </Form.Item>
                             <Form.Item
+                                label='Quản lý'
+                            >
+                                <Select
+                                    options={userInfors}
                                     name='managerId'
-                                    label='Quản lý'
+                                    value={formData.managerId}
+                                    onChange={onChangeSelect}
                                 >
-                                    <Select
-                                        options={userInfors}
-                                    >
-                                    </Select>
-                                </Form.Item>
+                                </Select>
+                            </Form.Item>
+                            <Form.Item>
+                                <Flex gap='middle'>
+                                    <Button htmlType="submit" type="primary">Cập nhật</Button>
+                                    <Button onClick={closeEdit}>Thoát</Button>
+                                </Flex>
+                            </Form.Item>
                         </Form>
                     </Modal>
 
@@ -303,7 +344,7 @@ const Deparments = () => {
                                 <Divider style={{ backgroundColor: '#686d8a', margin: '0' }} />
 
                                 <Flex gap='small' style={{ padding: '12px' }}>
-                                    <button className={clsx(styles.btn, styles.editBtn)} onClick={()=> openEdit(item)}><EditOutlined /></button>
+                                    <button className={clsx(styles.btn, styles.editBtn)} onClick={() => openEdit(item)}><EditOutlined /></button>
 
                                     <button className={clsx(styles.btn, styles.kpiBtn)} onClick={openKpi}><FolderAddOutlined /></button>
 
