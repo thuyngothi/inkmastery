@@ -44,18 +44,26 @@ const Projects = () => {
                                         hoverable
                                         style={{ width: '95%', backgroundColor: '#2f3349' }}
                                         cover={
-                                            <img src='https://res.cloudinary.com/dacc055vz/image/upload/v1717007151/xyz-abc_638526291478799100image.jpg' />
+                                            <Flex style={{padding:'4px'}}>
+                                                <div style={{
+                                                    justifySelf: 'center',
+                                                    backgroundImage: `url(${item.imageDescription})`,
+                                                    backgroundSize: 'cover',
+                                                    height: '200px',
+                                                }}>
+                                                </div>
+                                            </Flex>
                                         }
                                     >
                                         <Flex vertical style={{ textAlign: 'left' }}>
-                                            <Text 
-                                                ellipsis = {
-                                                    {Row: 1,}
+                                            <Text
+                                                ellipsis={
+                                                    { Row: 1, }
                                                 }
-                                            style={{ fontSize: '18px' }}>{item.projectName}</Text>
+                                                style={{ fontSize: '18px' }}>{item.projectName}</Text>
                                             <Text>Leader: {item.leader}</Text>
-                                            <Text>Ngày tạo: {`${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`}</Text>
-                                            <Text>Tiến độ: <span style={{color:'#15b468'}}>{item.progress}%</span></Text>
+                                            <Text>Ngày tạo: {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Text>
+                                            <Text>Tiến độ: <span style={{ color: '#15b468' }}>{item.progress}%</span></Text>
                                         </Flex>
                                     </Card>
                                 </Col>
