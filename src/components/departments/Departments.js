@@ -38,7 +38,7 @@ const Deparments = () => {
         })
     }
     const onChangeSelect = (value) => {
-        setFormData( prev => {
+        setFormData(prev => {
             return {
                 ...prev,
                 managerId: value,
@@ -63,6 +63,7 @@ const Deparments = () => {
         fetchData()
     }, [])
 
+    // Logic get fullName and id of User
     let userInfors = []
     const getInfor = () => {
         users.map(item => {
@@ -71,7 +72,6 @@ const Deparments = () => {
         })
     }
     getInfor()
-    console.log(userInfors)
 
     // Logic get All Departments
     useEffect(() => {
@@ -96,8 +96,11 @@ const Deparments = () => {
 
     // Logic Create New department
     const openCreate = () => setIsOpenCreate(true)
-    const closeCreate = () => setIsOpenCreate(false)
-    const handleCreate = async() => {
+    const closeCreate = () => {
+        setIsOpenCreate(false)
+        setFormData({})
+    }
+    const handleCreate = async () => {
         try {
             const response = await instance.post('api/Admin/CreateTeam', formData)
             console.log(response)
@@ -126,7 +129,7 @@ const Deparments = () => {
         })
     }
     const closeEdit = () => {
-        setIsOpenEdit(false) 
+        setIsOpenEdit(false)
         setFormData({})
     }
     const handleEdit = async (values) => {
@@ -177,7 +180,7 @@ const Deparments = () => {
     return (
         <>
             <Flex vertical gap='middle' className={styles.departmentContainer}>
-                <Flex gap='middle' style={{ width: '100%' }} align="center" justify="space-around">
+                <Flex gap='middle' style={{ width: '100%' }} align="center" justify="space-between">
                     <Flex style={{ width: '80%' }} gap='middle'>
                         <Input prefix={<SearchOutlined />} className='searchInput' placeholder="Tìm kiếm phòng ban" />
                         <Button className="submitBtn">Tìm kiếm</Button>
@@ -188,18 +191,17 @@ const Deparments = () => {
                         +
                     </button>
                     <Modal
-                        className="modal"
                         open={isOpenCreate}
                         onCancel={closeCreate}
-                        title='Tạo mới phòng ban'
                         footer={null}
                     >
+                        <Title level={3}>Tạo mới phòng ban</Title>
                         <Form layout="vertical" onFinish={handleCreate}>
                             <Flex justify="space-between">
                                 <Form.Item
                                     label='Tên phòng ban'
                                     style={{
-                                        width: '45%'
+                                        width: '46%'
                                     }}
                                 >
                                     <Input name='name' value={formData.name} onChange={onChange} />
@@ -207,7 +209,7 @@ const Deparments = () => {
                                 <Form.Item
                                     label='Quản lý'
                                     style={{
-                                        width: '45%'
+                                        width: '46%'
                                     }}
                                 >
                                     <Select
@@ -219,31 +221,31 @@ const Deparments = () => {
                                     </Select>
                                 </Form.Item>
                             </Flex>
-                            <Form.Item                              
+                            <Form.Item
                                 label='Mô tả'>
                                 <TextArea name='description' value={formData.description} onChange={onChange} />
                             </Form.Item>
-                            <Flex gap='middle'>
-                                <Form.Item>
-                                    <Button htmlType="submit" type="primary">Thêm mới</Button>
-                                </Form.Item>
-                                <Form.Item>
-                                    <Button onClick={closeCreate} >Thoát</Button>
-                                </Form.Item>
-                            </Flex>
+                            <Form.Item>
+                                <Flex gap='middle' justify="flex-end">
+                                    <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Tạo mới</Button>
+                                    <Button className="modal-cancelBtn" onClick={closeCreate}>Thoát</Button>
+                                </Flex>
+                            </Form.Item>
                         </Form>
                     </Modal>
 
                 </Flex>
 
-                <Flex wrap gap='large' justify="space-between">
+                <Flex wrap gap='large' justify="flex-start">
                     <Modal
-                        className="modal"
                         open={isOpenEdit}
                         onCancel={closeEdit}
                         footer={null}
-                        title='Sửa thông tin phòng ban'
+                        style={{
+                            paddingBottom:'1px !important'
+                        }}
                     >
+                        <Title level={3}>Sửa thông tin phòng ban</Title>
                         <Form layout="vertical" onFinish={handleEdit}>
                             <Form.Item
                                 label='Tên phòng ban'
@@ -267,9 +269,9 @@ const Deparments = () => {
                                 </Select>
                             </Form.Item>
                             <Form.Item>
-                                <Flex gap='middle'>
-                                    <Button htmlType="submit" type="primary">Cập nhật</Button>
-                                    <Button onClick={closeEdit}>Thoát</Button>
+                                <Flex gap='middle' justify="flex-end">
+                                    <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Cập nhật</Button>
+                                    <Button className="modal-cancelBtn" onClick={closeEdit}>Thoát</Button>
                                 </Flex>
                             </Form.Item>
                         </Form>
@@ -279,35 +281,46 @@ const Deparments = () => {
                         className="modal"
                         open={isOpenKpi}
                         onCancel={closeKpi}
-                        title='Giao KPI dự án'
+                        footer={null}
                     >
+                        <Title level={3}>Giao KPI dự án</Title>
                         <Form layout="vertical">
-                            <Flex justify="space-around">
+                            <Flex gap='middle' justify="space-around">
                                 <Form.Item
+                                    style={{ width: '48%' }}
                                     name=''
                                     label='Tên chỉ tiêu'
                                 >
                                     <Input />
                                 </Form.Item>
                                 <Form.Item
+                                    style={{ width: '48%' }}
                                     name=''
                                     label='Nhân viên'>
                                     <Input />
                                 </Form.Item>
                             </Flex>
-                            <Flex justify="space-around">
+                            <Flex gap='middle' justify="space-around">
                                 <Form.Item
+                                    style={{ width: '48%' }}
                                     name=''
                                     label='Thời gian làm'
                                 >
                                     <Input />
                                 </Form.Item>
                                 <Form.Item
+                                    style={{ width: '48%' }}
                                     name=''
                                     label='Chỉ tiêu'>
                                     <Input />
                                 </Form.Item>
                             </Flex>
+                            <Form.Item>
+                                <Flex gap='middle' justify="flex-end">
+                                    <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Cập nhật</Button>
+                                    <Button className="modal-cancelBtn" onClick={closeKpi}>Thoát</Button>
+                                </Flex>
+                            </Form.Item>
                         </Form>
                     </Modal>
 
@@ -316,11 +329,11 @@ const Deparments = () => {
                         open={isOpenDelete}
                         onCancel={closeDelete}
                         footer={null}
-                        title='Bạn chắc chắn xóa phòng ban này?'
                     >
-                        <Flex gap='middle'>
-                            <Button onClick={handleDelete} type="primary">Xóa</Button>
-                            <Button onClick={closeDelete}>Thoát</Button>
+                        <Title level={3}>Bạn chắc chắn xóa phòng ban này?</Title>
+                        <Flex gap='middle' justify="flex-end">
+                            <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary" onClick={handleDelete}>Xóa</Button>
+                            <Button className="modal-cancelBtn" onClick={closeDelete}>Thoát</Button>
                         </Flex>
                     </Modal>
 

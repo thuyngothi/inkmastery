@@ -44,6 +44,7 @@ const Employee = () => {
         const fetchData = async () => {
             const response = await axios.get('https://localhost:44389/api/User/GetAllUsers')
             if (response && response.status === 200) {
+                console.log(response.data)
                 let data = []
                 response.data.forEach((element, index) => {
                     const { fullName, email, phoneNumber, teamName, id } = element;
@@ -214,13 +215,13 @@ const Employee = () => {
                 </Flex>
 
                 <Modal
-                    className="modal"
+                    className={styles.modal}
                     open={isEditDepartment}
                     onCancel={closeEditDepartment}
                     footer={null}
-                    title='Cập nhật phòng ban nhân viên'
                 >
-                    <Text>Nhân viên: {selectedEmployee}</Text>
+                    <Title className={styles.modalTitle} level={3}>Cập nhật phòng ban nhân viên</Title>
+                    <Text className={styles.modalEmployee}>Nhân viên: {selectedEmployee}</Text>
                     <Form layout="vertical" onFinish={handleEditDepartment}>
                         <Form.Item
                             label='Phòng ban'
@@ -234,21 +235,21 @@ const Employee = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item>
-                            <Flex gap='middle'>
-                                <Button htmlType="submit" type="primary">Cập nhật</Button>
-                                <Button onClick={closeEditDepartment}>Thoát</Button>
+                            <Flex gap='middle' justify="flex-end">
+                                <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Cập nhật</Button>
+                                <Button className="modal-cancelBtn" onClick={closeEditDepartment}>Thoát</Button>
                             </Flex>
                         </Form.Item>
                     </Form>
                 </Modal>
 
                 <Modal
-                    className="modal"
                     open={isEditRoles}
                     onCancel={closeEditRoles}
-                    title='Cập nhật quyền hạn'
+                    footer={null}
                 >
-                    <Text>Nhân viên: {selectedEmployee}</Text>
+                    <Title className={styles.modalTitle} level={3}>Cập nhật quyền hạn</Title>
+                    <Text className={styles.modalEmployee}>Nhân viên: {selectedEmployee}</Text>
                     <Form layout="vertical">
                         <Form.Item
                             label='Quyền hạn'
@@ -258,19 +259,24 @@ const Employee = () => {
                             >
                             </Select>
                         </Form.Item>
+                        <Form.Item>
+                            <Flex gap='middle' justify="flex-end">
+                                <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Cập nhật</Button>
+                                <Button className="modal-cancelBtn" onClick={closeEditRoles}>Thoát</Button>
+                            </Flex>
+                        </Form.Item>
                     </Form>
                 </Modal>
 
                 <Modal
-                    className="modal"
                     open={isOpenDelete}
                     onCancel={closeDelete}
                     footer={null}
-                    title='Bạn chắc chắn xóa nhân viên này này?'
                 >
-                    <Flex gap='middle'>
-                        <Button onClick={handleDelete} type="primary">Xóa</Button>
-                        <Button onClick={closeDelete}>Thoát</Button>
+                    <Title level={3}>Bạn chắc chắn xóa nhân viên này này?</Title>
+                    <Flex gap='middle' justify="flex-end">
+                        <Button className="submitBtn" onClick={handleDelete} type="primary">Xóa</Button>
+                        <Button className="modal-cancelBtn" onClick={closeDelete}>Thoát</Button>
                     </Flex>
                 </Modal>
                 <Table className={styles.tableEmployee} columns={columns} dataSource={employees} />

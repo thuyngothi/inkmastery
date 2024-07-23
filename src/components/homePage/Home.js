@@ -3,6 +3,7 @@ import { Routes, Route, useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Flex, Typography, Menu, Input, Card, Avatar, Modal, Col, Button } from "antd";
 import { BarChartOutlined, UserOutlined, BlockOutlined, DeliveredProcedureOutlined, ProfileOutlined, HomeOutlined, UsergroupAddOutlined, ApartmentOutlined, SearchOutlined, LogoutOutlined } from "@ant-design/icons";
+import clsx from 'clsx';
 
 import styles from './Home.module.scss'
 import logo from '../../assets/images/logoPrint.png'
@@ -17,7 +18,6 @@ import Employees from "../employees/Employee"
 import Customers from "../customers/Customers"
 import Department from "../departments/Departments"
 import Profile from '../profile/Profile';
-import clsx from 'clsx';
 
 const { Title, Text } = Typography
 const Home = () => {
@@ -71,7 +71,7 @@ const Home = () => {
             icon: <ProfileOutlined />,
             label: 'Quản lý dự án',
             title: 'Quản lý dự án',
-            roles: 'Leader',
+            roles: 'Employee',
         },
         {
             key: 'main',

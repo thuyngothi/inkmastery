@@ -7,19 +7,31 @@
 
 .btn {
     border: none;
-    color: #fff;
+    color: #fff !important;
     font-size: 16px;
     &:hover {
         opacity: .7;
     }
 }
 .changeManagementBtn {
-    background-color: $secondColor;
+    background-color: $secondColor !important;
 }
 .addRoleBtn {
-    background-color: #15b468;
+    background-color: #15b468 !important;
 }
 
 .deleteBtn{
-    background-color: #fa6456;
+    background-color: #fa6456 !important;
+}
+
+/// ========== CSS MODAL ==============
+
+.modalTitle,
+.modalEmployee {
+    text-align: center !important;
+}
+.modalEmployee {
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
 }
