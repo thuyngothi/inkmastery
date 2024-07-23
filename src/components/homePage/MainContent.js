@@ -28,7 +28,7 @@ const MainContent = () => {
 
     return (
         <>
-            <Flex wrap gap='large' justify='space-between' style={{ padding: '16px' }}>
+            <Flex wrap gap='large' justify='flex-start' style={{ padding: '16px' }}>
                 {
                     projects.map((item, index) => {
                         const date = new Date(item.actualEndDate)
