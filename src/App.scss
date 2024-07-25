@@ -111,7 +111,7 @@ h3.ant-typography,
 }
 
 .ant-modal-content label {
-  color: $fistColor !important;
+  color: $mainColor !important;
 }
 .modal-cancelBtn {
   font-weight: 500;
@@ -129,7 +129,30 @@ h3.ant-typography,
   background-color: $BgThirdColor !important;
   border: 1px solid $fistColor !important;
   color: $mainColor;
+  box-shadow: none !important;
 }
 .ant-select .ant-select-arrow {
   color: $mainColor !important;
+}
+
+.ant-picker-input-placeholder >input {
+  color: $mainColor !important;
+}
+.ant-picker-suffix {
+  color: $mainColor !important;
+}
+
+.ant-select-outlined {
+  border-radius: 8px;
+}
+.ant-select-selector {
+  background-color: $BgSecondColor!important;
+  border: 1px solid $fistColor !important;
+  color: $mainColor !important;
+  border: none !important;
+}
+
+// CSS Ant input status error
+.ant-input-status-error {
+  background-color: $BgSecondColor !important;
 }

@@ -18,7 +18,7 @@ const Deparments = () => {
 
     const [departments, setDepartments] = useState([])
     const [isChange, setIsChange] = useState(false)
-    const [users, setUsers] = useState([])
+    const [leaders, setLeaders] = useState([])
 
     const [isOpenCreate, setIsOpenCreate] = useState(false)
     const [isOpenEdit, setIsOpenEdit] = useState(false)
@@ -46,13 +46,13 @@ const Deparments = () => {
         })
     }
 
-    // Logic get all Leader users
+    // Logic get all Leaders
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const response = await axios.get('https://localhost:44389/api/User/GetAllUserContainsLeaderRole')
                 if (response && response.status === 200) {
-                    setUsers(response.data)
+                    setLeaders(response.data)
                 } else {
                     message.error('Lỗi!')
                 }
@@ -63,12 +63,12 @@ const Deparments = () => {
         fetchData()
     }, [])
 
-    // Logic get fullName and id of User
-    let userInfors = []
+    // Logic get fullName and id of Leader
+    let leaderInfors = []
     const getInfor = () => {
-        users.map(item => {
+        leaders.map(item => {
             const { fullName, id } = item;
-            userInfors.push({ value: id, label: fullName })
+            leaderInfors.push({ value: id, label: fullName })
         })
     }
     getInfor()
@@ -92,7 +92,7 @@ const Deparments = () => {
 
         fetchData();
     }, [isChange])
-    console.log(departments);
+    // console.log(departments);
 
     // Logic Create New department
     const openCreate = () => setIsOpenCreate(true)
@@ -214,7 +214,7 @@ const Deparments = () => {
                                 >
                                     <Select
                                         name='managerId'
-                                        options={userInfors}
+                                        options={leaderInfors}
                                         value={formData.managerId}
                                         onChange={onChangeSelect}
                                     >
@@ -261,7 +261,7 @@ const Deparments = () => {
                                 label='Quản lý'
                             >
                                 <Select
-                                    options={userInfors}
+                                    options={leaderInfors}
                                     name='managerId'
                                     value={formData.managerId}
                                     onChange={onChangeSelect}

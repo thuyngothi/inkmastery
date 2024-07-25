@@ -1,19 +1,17 @@
-import { Flex, Typography, Button, Input, Card, Col, message, Modal, Form, Select, Image } from "antd"
-import TextArea from "antd/es/input/TextArea"
+import { Flex, Typography, Button, Input, Card, Col, message} from "antd"
 import { SearchOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react"
 import axios from "axios"
 import clsx from "clsx"
 
 import styles from './Project.module.scss'
-import logo from '../../assets/images/logoPrint.png'
+import ModalCreate from "./ModalCreate"
 
-const { Title, Text } = Typography
+const { Text } = Typography
 const Projects = () => {
     const [projects, setProjects] = useState([])
-    const [isOpenCreate, setIsOpenCreate] = useState(false)
-    const [data, setData] = useState({})
     const [isChange, setIsChange] = useState('false')
+    const [isOpenCreate, setIsOpenCreate] = useState(false)
 
     const token = localStorage.getItem('token')
     const instance = axios.create({
@@ -28,34 +26,20 @@ const Projects = () => {
             const response = await instance.get('api/Admin/GetAllProject')
             if (response && response.status === 200) {
                 setProjects(response.data)
+                setIsChange(false)
             }
         }
         fetchData()
-    }, [])
+    }, [isChange])
 
-    // Logic Create New Project
     const openCreate = () => setIsOpenCreate(true)
-    const closeCreate = () => {
-        setIsOpenCreate(false)
-        setData({})
+    const changeCreateStatus = (value) => {
+        setIsOpenCreate(value);
     }
-    const handleCreate = async () => {
-        const formData = new FormData()
-        try {
-            const response = await instance.post('api/Admin/CreateProject', data)
-            console.log(response)
-            if (response && response.data.status === 200) {
-                message.success('Tạo mới Project thành công!')
-                console.log('Tạo mới thành công: ', response.data)
-                setIsOpenCreate(false)
-                setIsChange(true)
-                setData({})
-            } else {
-                message.error(response.data.message)
-            }
-        } catch (error) {
-            console.error('Không thể tạo mới dự án! Lỗi: ', error)
-        }
+
+    // Function set change status list Projects
+    const changeProjectsStatus = (value) => {
+        setIsChange(value)
     }
 
     return (
@@ -72,61 +56,11 @@ const Projects = () => {
                         +
                     </button>
 
-                    <Modal
-                        open={isOpenCreate}
-                        onCancel={closeCreate}
-                        footer={null}
-                    >
-                        <Title style={{textAlign:'center'}} level={3}>Thêm dự án</Title>
-                        <Form layout="vertical"
-                        // onFinish={handleCreate}
-                        >
-                            <Form.Item>
-                                <Image />
-                                <Input type="file"/>
-                            </Form.Item>
-                            <Flex justify="space-between">
-                                <Form.Item
-                                    label='Tên dự án'
-                                    style={{
-                                        width: '46%'
-                                    }}
-                                >
-                                    <Input name='ProjectName'
-                                        value={data.name}
-                                    // onChange={onChange}
-                                    />
-                                </Form.Item>
-                                <Form.Item
-                                    label='Dự kiến hoàn thành'
-                                    style={{
-                                        width: '46%'
-                                    }}
-                                >
-                                    <Select
-                                        name='managerId'
-                                        // options={userInfors}
-                                        value={data.managerId}
-                                    // onChange={onChangeSelect}
-                                    >
-                                    </Select>
-                                </Form.Item>
-                            </Flex>
-                            <Form.Item
-                                label='Mô tả'>
-                                <TextArea name='description'
-                                    value={data.description}
-                                    // onChange={onChange} 
-                                    />
-                            </Form.Item>
-                            <Form.Item>
-                                <Flex gap='middle' justify="flex-end">
-                                    <Button className={clsx('submitBtn', styles.updateBtn)} htmlType="submit" type="primary">Tạo mới</Button>
-                                    <Button className="modal-cancelBtn" onClick={closeCreate}>Thoát</Button>
-                                </Flex>
-                            </Form.Item>
-                        </Form>
-                    </Modal>
+                   <ModalCreate open = {isOpenCreate}
+                        changeCreateStatus = {changeCreateStatus}
+                        changeProjectsStatus = {changeProjectsStatus}
+                   
+                   />
                 </Flex>
 
                 <Flex wrap gap='large' style={{ padding: '16px' }} justify="flex-start">
