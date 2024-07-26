@@ -7,17 +7,15 @@
 .btn {
     border: none;
     border-radius: 50%;
-    width: 25px;
-    height: 25px;
     color: #fff;
     cursor: pointer;
+    font-size: 25px;
     &:hover {
         opacity: .7;
     }
 }
 .createBtn {
     background-color: $secondColor;
-    font-size: 25px;
     width: 30px;
     height: 30px;
 }
@@ -39,9 +37,89 @@
     box-shadow: none !important;
 }
 .inforInput input::placeholder {
-    color: $mainColor !important;
+    color: $thirdColor !important;
 }
 .inforInput input{
     border: none !important;
-    background-color:  $BgThirdColor !important;
+    background-color: $BgThirdColor !important;
 }
+
+
+// CSS Project process
+.projectProcess {
+    background-color: $BgMainColor;   
+    height: 100vh;
+}
+
+.navMenu {
+    background-color: $BgThirdColor;
+    padding: 16px 0;
+    color: $mainColor;
+}
+.closeBtn {
+    color: $fistColor;
+    font-size: 20px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.iconStage {
+    font-size: 40px;
+    color: $mainColor;
+}
+
+// CSS Stage content
+.stageContent {
+    padding: 16px;
+    text-align: left;
+}
+.stageContent span{
+    margin-bottom: 8px;
+}
+.projectDetailImg {
+    height: max-content;
+    border-right: 1px solid $thirdColor;
+}
+.projectDetailImg img {
+    max-width: 95%;
+}
+
+.generalInfor{
+    padding: 16px 24px;
+}
+.mainInfor{
+    border: 1px solid $thirdColor;
+    border-radius: 8px;
+}
+.userInfor{
+    padding: 16px;
+}
+.price {
+    padding: 16px;
+}
+
+.inforItem {
+    background-color: $BgThirdColor;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+@media (max-width: 991px){
+    .iconStage {
+        font-size: 30px;
+    }
+    
+    .projectDetailImg {
+        border-right: none;
+    }
+    .projectDetailImg img {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+    

@@ -114,11 +114,11 @@ const Register = () => {
                     [name]: `${placeholder} phải tối thiểu 4 ký tự!`
                 }
             ))
-        } else if (value.length > 12) {
+        } else if (value.length > 255) {
             setErrors(prev => (
                 {
                     ...prev,
-                    [name]: `${placeholder} không được quá 12 ký tự!`
+                    [name]: `${placeholder} không được quá 255 ký tự!`
                 }
             ))
         }

@@ -17,7 +17,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
     const [valueDate, setValueDate] = useState('')
     const [data, setData] = useState({})
 
-    const [errors, setError] = useState({})
+    const [errors, setErrors] = useState({})
 
     const token = localStorage.getItem('token')
     const instance = axios.create({
@@ -108,10 +108,13 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
             }
         });
         setValueDate(date)
+        if (errors.expectedEndDate) {
+            delete (errors.expectedEndDate)
+        }
     };
 
     const handleChange = (e) => {
-        console.log(data)
+        console.log(e.target)
         const { name, value } = e.target
         setData(prev => {
             return {
@@ -119,6 +122,10 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                 [name]: value,
             }
         })
+
+        if (errors[name]) {
+            delete (errors[name])
+        }
     }
     const handleSelectLeader = (value) => {
         setData(prev => {
@@ -127,6 +134,9 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                 leader: value,
             }
         })
+        if (errors.leader) {
+            delete (errors.leader)
+        }
     }
     const handleSelectCustomer = (value) => {
         setData(prev => {
@@ -135,6 +145,37 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                 customer: value,
             }
         })
+        if (errors.customer) {
+            delete (errors.customer)
+        }
+    }
+
+    // Logic Validate on Blur 
+    const mouseBlurInput = (e) => {
+        const { name, value} = e.target
+        console.log(e.target)
+        if (!value) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `Vui lòng nhập dữ liệu ${name}`
+                }
+            ))
+        } else if (value.length < 10) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `${name} phải tối thiểu 10 ký tự!`
+                }
+            ))
+        } else if (value.length > 255) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `${name} không được quá 255 ký tự!`
+                }
+            ))
+        }
     }
 
     // Logic Create New Project
@@ -162,8 +203,8 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
         if (!customer) newError.customer = 'Vui lòng chọn khách hàng!'
 
         //setError(newError)
-        if(Object.keys(newError).length > 0) {
-            setError(newError)
+        if (Object.keys(newError).length > 0) {
+            setErrors(newError)
             return;
         }
 
@@ -204,7 +245,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                     setData({})
                     setValueAvatar('')
                     setValueDate('')
-                    setError({})
+                    setErrors({})
                 }}
                 footer={null}
             >
@@ -238,13 +279,15 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                             help={errors.projectName || ''}
                         >
                             <Input name='projectName'
+                                label='Tên dự án'
                                 value={data.projectName}
                                 onChange={handleChange}
+                                onBlur={mouseBlurInput}
                             />
                         </Form.Item>
                         <Form.Item
                             required
-                            label='Ngày dự kiến'
+                            label='Ngày dự kiến hoàn thành'
                             style={{
                                 width: '46%'
                             }}
@@ -252,11 +295,13 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                             help={errors.expectedEndDate || ''}
                         >
                             <DatePicker
+                                label='dự kiến hoàn thành'
                                 name='expectedEndDate'
-                                onChange={handleDateChange}
                                 value={valueDate}
                                 placeholder='yyyy-mm-dd'
                                 className={styles.inforInput}
+                                onChange={handleDateChange}
+                                onBlur={mouseBlurInput}
                             />
                         </Form.Item>
                     </Flex>
@@ -272,11 +317,11 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                             help={errors.leader || ''}
                         >
                             <Select
-                                className={styles.inforInput}
-                                name='leader'
+                                label='leader'
                                 options={leaderInfors}
                                 value={data.leader}
                                 onChange={handleSelectLeader}
+                                onBlur={mouseBlurInput}
                             >
                             </Select>
                         </Form.Item>
@@ -290,11 +335,11 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                             help={errors.customer || ''}
                         >
                             <Select
-                                className={styles.inforInput}
                                 name='customer'
                                 options={customerInfors}
                                 value={data.customer}
                                 onChange={handleSelectCustomer}
+                                onBlur={mouseBlurInput}
                             >
                             </Select>
                         </Form.Item>
@@ -307,9 +352,11 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                                 width: '46%'
                             }}
                         >
-                            <Input name='price'
+                            <Input
+                                name='price'
                                 value={data.price}
                                 onChange={handleChange}
+                                onBlur={mouseBlurInput}
                             />
                         </Form.Item>
                         <Form.Item
@@ -336,6 +383,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                         <TextArea name='requirement'
                             value={data.requirement}
                             onChange={handleChange}
+                            onBlur={mouseBlurInput}
                         />
                     </Form.Item>
 
@@ -348,6 +396,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                         <TextArea name='description'
                             value={data.description}
                             onChange={handleChange}
+                            onBlur={mouseBlurInput}
                         />
                     </Form.Item>
 
@@ -361,7 +410,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
                                     setData({})
                                     setValueAvatar('')
                                     setValueDate('')
-                                    setError({})
+                                    setErrors({})
                                 }}
                             >
                                 Thoát

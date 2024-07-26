@@ -1,17 +1,25 @@
-import { Flex, Typography, Button, Input, Card, Col, message} from "antd"
+import { Flex, Typography, Button, Input, Card, Col, message } from "antd"
 import { SearchOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react"
+import { Routes, Route, useNavigate } from "react-router-dom"
 import axios from "axios"
 import clsx from "clsx"
+
+import { useSelectedProject } from "../../App"
 
 import styles from './Project.module.scss'
 import ModalCreate from "./ModalCreate"
 
 const { Text } = Typography
+
 const Projects = () => {
+    const { setSelectedProject } = useSelectedProject();
+
     const [projects, setProjects] = useState([])
     const [isChange, setIsChange] = useState('false')
     const [isOpenCreate, setIsOpenCreate] = useState(false)
+
+    const navigate = useNavigate()
 
     const token = localStorage.getItem('token')
     const instance = axios.create({
@@ -56,11 +64,11 @@ const Projects = () => {
                         +
                     </button>
 
-                   <ModalCreate open = {isOpenCreate}
-                        changeCreateStatus = {changeCreateStatus}
-                        changeProjectsStatus = {changeProjectsStatus}
-                   
-                   />
+                    <ModalCreate open={isOpenCreate}
+                        changeCreateStatus={changeCreateStatus}
+                        changeProjectsStatus={changeProjectsStatus}
+                    />
+
                 </Flex>
 
                 <Flex wrap gap='large' style={{ padding: '16px' }} justify="flex-start">
@@ -69,7 +77,8 @@ const Projects = () => {
                             const date = new Date(item.startDate)
 
                             return (
-                                <Col key={index} xs={24} sm={24} md={11} lg={7}>
+                                <Col key={index} xs={24} sm={24} md={11} lg={7}
+                                >
                                     <Card
                                         hoverable
                                         style={{ width: '95%', backgroundColor: '#2f3349' }}
@@ -83,6 +92,11 @@ const Projects = () => {
                                                 }}>
                                                 </div>
                                             </Flex>
+                                        }
+                                        onClick={() => {
+                                            setSelectedProject(item)
+                                            navigate('project_process')
+                                        }
                                         }
                                     >
                                         <Flex vertical style={{ textAlign: 'left' }}>
