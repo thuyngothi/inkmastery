@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import axios from 'axios'
 import moment from 'moment';
 
-import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, message, Col } from 'antd'
+import { Flex, Typography, Form, Input, Button, Divider, Space, DatePicker, message, Col, Select } from 'antd'
 
 import styles from './Register.module.scss'
 import login_img from '../../assets/images/pages/auth-v2-register-illustration-dark.png'
@@ -14,6 +14,7 @@ const { Title, Text, Paragraph } = Typography
 const Register = () => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const [teams, setTeams] = useState([])
     const navigate = useNavigate()
 
     const [data, setData] = useState({
@@ -26,14 +27,68 @@ const Register = () => {
         Gender: '',
         TeamId: ''
     });
+    //const [data, setData] = useState({})
 
+    // Logic get all Teams
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://localhost:44389/api/Admin/GetAllTeams')
+
+                if (response && response.status === 200) {
+                    setTeams(response.data.map(item => {
+                        return {
+                            value: item.id,
+                            label: item.name
+                        }
+                    }))
+                } else {
+                    message.error('Lỗi!')
+                }
+            } catch (error) {
+                console.error('Có lỗi xảy ra: ', error)
+            }
+        }
+
+        fetchData();
+    }, [])
+
+    const genderOptions = [
+        {
+            label: 'Nam',
+            value: 1,
+        },
+        {
+            label: 'Nữ',
+            value: 2,
+        }
+    ]
+
+    // General logic on Change input
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prevFormData) => ({
             ...prevFormData,
             [name]: value
         }));
+        if (errors[name]) {
+            delete (errors[name])
+        }
     };
+    const handleSelectGender = (value) => {
+        setData(prev => (
+            {
+                ...prev,
+                Gender: value,
+            }
+        ))
+    }
+    const handleSelectTeam = (value) => {
+        setData(prev => ({
+            ...prev,
+            TeamId: value,
+        }))
+    }
 
     const handleDateChange = (date, dateString) => {
         setData((prevFormData) => ({
@@ -41,6 +96,96 @@ const Register = () => {
             DateOfBirth: date ? moment(date).toISOString() : null
         }));
     };
+
+    const mouseBlurInput = (e) => {
+        const { name, value, placeholder } = e.target
+        console.log(e.target)
+        if (!value) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `Vui lòng nhập ${placeholder}`
+                }
+            ))
+        } else if (value.length < 4) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `${placeholder} phải tối thiểu 4 ký tự!`
+                }
+            ))
+        } else if (value.length > 255) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    [name]: `${placeholder} không được quá 255 ký tự!`
+                }
+            ))
+        }
+    }
+    const mouseBlurEmail = (e) => {
+        const Email = e.target.value
+        const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        if (!Email) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    Email: 'Vui lòng nhập Email!'
+                }
+            ))
+        } else if (!regex.test(Email)) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    Email: 'Email đã nhập không đúng định dạng!'
+                }
+            ))
+        }
+    }
+    const mouseBlurPassword = (e) => {
+        const Password = e.target.value
+        if (!Password) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    Password: 'Vui lòng nhập mật khẩu!'
+                }
+            ))
+        } else if (Password.length < 4) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    Password: 'Mật khẩu phải tối thiểu 4 ký tự!'
+                }
+            ))
+        } else if (Password.length > 12) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    Password: 'Mật khẩu không được quá 12 ký tự!'
+                }
+            ))
+        }
+    }
+    const mouseBlurPhone = (e) => {
+        const PhoneNumber = e.target.value
+        const regex = /^(0[3|5|7|8|9])[0-9]{8}$|^(02)[0-9]{9}$/;
+        if (!PhoneNumber) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    PhoneNumber: 'Vui lòng nhập số điện thoại!'
+                }
+            ))
+        } else if (!regex.test(PhoneNumber)) {
+            setErrors(prev => (
+                {
+                    ...prev,
+                    PhoneNumber: 'Số điện thoại đã nhập không đúng định dạng!'
+                }
+            ))
+        }
+    }
 
     const handleSubmit = async () => {
         const formData = new FormData();
@@ -54,17 +199,16 @@ const Register = () => {
         }
         formData.append('Gender', data.Gender);
         formData.append('TeamId', data.TeamId);
-        console.log(formData)
 
-        const { Username, Email, Password, FullName, PhoneNumber } = data;
-
-        // Validation
+        //Validation
+        const { Username, Email, Password, FullName, PhoneNumber, TeamId } = data;
         let newErrors = {};
-        if (!Username) newErrors.Username = 'Please input Username!';
-        if (!Email) newErrors.Email = 'Please input Email!';
-        if (!Password) newErrors.Password = 'Please input your password!';
-        if (!FullName) newErrors.FullName = 'Please input your FullName!';
-        if (!PhoneNumber) newErrors.PhoneNumber = 'Please input your Phone number!';
+        if (!Username) newErrors.Username = 'Vui lòng nhập tên tài khoản!';
+        if (!Email) newErrors.Email = 'Vui lòng nhập Email!';
+        if (!Password) newErrors.Password = 'Vui lòng nhập mật khẩu!';
+        if (!FullName) newErrors.FullName = 'Vui lòng nhập họ tên!';
+        if (!PhoneNumber) newErrors.PhoneNumber = 'Vui lòng nhập số điện thoại!';
+        if (!TeamId) newErrors.TeamId = 'Vui lòng chọn team của bạn!'
 
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
@@ -91,8 +235,8 @@ const Register = () => {
             console.error('Registration failed:', error);
             message.error('Register failed!');
         }
-
         setLoading(false)
+        console.log(formData)
     };
 
     return (
@@ -112,7 +256,7 @@ const Register = () => {
                         <img src={logo} style={{ width: '20%' }}></img>
                         <Title level={3} style={{ color: '#c7cbe3' }}>InkMastery</Title>
                     </Flex>
-                    
+
                     <Form
                         className={styles.formRegister}
                         layout='vertical'
@@ -126,15 +270,14 @@ const Register = () => {
                             label='Tài khoản' required
                             validateStatus={errors.Username ? 'error' : ''}
                             help={errors.Username || ''}
-                        // rules={[{ required: true, message: 'Vui lòng nhập vào tên tài khoản!' }]}
                         >
                             <Input
                                 name='Username'
-                                // {...register('Username', { required: 'Vui lòng nhập vào tên tại khoản!' })}
                                 value={data.Username}
-                                onChange={handleChange}
                                 className={styles.inforInput}
                                 placeholder='Tài khoản'
+                                onChange={handleChange}
+                                onBlur={mouseBlurInput}
                             />
                         </Form.Item>
 
@@ -145,9 +288,11 @@ const Register = () => {
                         >
                             <Input
                                 name='Email'
-                                value={data.Email} onChange={handleChange} type="email"
+                                value={data.Email}
                                 className={styles.inforInput}
-                                placeholder='abc123@gmail.com'
+                                placeholder='Email'
+                                onChange={handleChange}
+                                onBlur={mouseBlurEmail}
                             />
                         </Form.Item>
 
@@ -158,10 +303,12 @@ const Register = () => {
                         >
                             <Input.Password
                                 name='Password'
-                                value={data.Password} onChange={handleChange}
-                                //{...register('Password', { required: 'VUi lòng nhập vào mật khẩu!' })}
+                                value={data.Password}
                                 className={styles.inforInput}
-                                placeholder='Mật khẩu' />
+                                placeholder='Mật khẩu'
+                                onChange={handleChange}
+                                onBlur={mouseBlurPassword}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -171,9 +318,11 @@ const Register = () => {
                         >
                             <Input
                                 name='FullName'
-                                value={data.FullName} onChange={handleChange}
-                                //{...register('FullName', { required: 'Vui lòng nhập vào họ tên!' })}
-                                className={styles.inforInput} placeholder='Nguyễn Văn A' />
+                                value={data.FullName}
+                                className={styles.inforInput} placeholder='Họ tên'
+                                onChange={handleChange}
+                                onBlur={mouseBlurInput}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -183,9 +332,11 @@ const Register = () => {
                         >
                             <Input
                                 name='PhoneNumber'
-                                value={data.PhoneNumber} onChange={handleChange}
-                                //{...register('PhoneNumber', { required: 'Vui lòng nhập vào số điện thoại!' })}
-                                className={styles.inforInput} placeholder='Tài khoản' />
+                                value={data.PhoneNumber}
+                                className={styles.inforInput} placeholder='Tài khoản'
+                                onChange={handleChange}
+                                onBlur={mouseBlurPhone}
+                            />
                         </Form.Item>
 
                         <Form.Item
@@ -201,20 +352,24 @@ const Register = () => {
                         <Form.Item
                             label='Giới tính'
                         >
-                            <Input
-                                //{...register('Gender')}
+                            <Select
                                 name='Gender'
                                 value={data.Gender}
-                                onChange={handleChange}
+                                onChange={handleSelectGender}
+                                options={genderOptions}
                                 className={styles.inforInput} placeholder='Giới tính' />
                         </Form.Item>
                         <Form.Item
                             label='Đội ngũ'
+                            required
+                            validateStatus={errors.TeamId ? 'error' : ''}
+                            help={errors.TeamId || ''}
                         >
-                            <Input
-                                //{...register('TeamId')}
-                                name='TeamId'
-                                value={data.TeamId} onChange={handleChange}
+                            <Select
+                                name='TeamId'                                
+                                value={data.TeamId} 
+                                options={teams}
+                                onChange={handleSelectTeam}
                                 className={styles.inforInput} placeholder='Đội ngũ' />
                         </Form.Item>
 
@@ -222,7 +377,7 @@ const Register = () => {
                             <Button size='middle'
                                 htmlType='submit'
                                 loading={loading}
-                                className={clsx('submitBtn',styles.registerBtn)}
+                                className={clsx('submitBtn', styles.registerBtn)}
                             >
                                 Đăng Ký
                             </Button>

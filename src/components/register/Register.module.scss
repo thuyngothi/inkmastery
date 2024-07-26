@@ -1,10 +1,7 @@
-$mainColor: #c7cbe3;
-$fistColor:#7367f0; 
-$secondColor: #9087f3;
-$thirdColor: #d6d9e485;
+@import '../colors';
 
 .container {
-    background-color: #393d52;
+    background-color: $BgSecondColor;
     padding: 24px;
 }
 
@@ -25,18 +22,11 @@ $thirdColor: #d6d9e485;
 }
 
 .inforInput{
-    background-color: #393d52;
-    color: $mainColor;
-    border: 1px solid $secondColor;
+    text-align: left;
+    background-color: $BgSecondColor !important;
+    color: $mainColor !important;
+    border: 1px solid $secondColor !important;
     width: 100%;
-    &:hover {
-        background-color: #393d52;
-        border: 1px solid $secondColor;
-    }
-    &:focus{
-        background-color: #393d52;
-        border: 1px solid $secondColor !important;
-    }
     &::placeholder{
         color: $thirdColor !important;
     }
@@ -45,9 +35,9 @@ $thirdColor: #d6d9e485;
     color: $thirdColor !important;
 }
 
-
 .registerBtn {
     width: 100%;
+    margin-top: 16px;
 }
 
 .linkBtn {

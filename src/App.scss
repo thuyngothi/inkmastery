@@ -12,6 +12,7 @@ $BgThirdColor: #2f3349;
 }
 
 h3.ant-typography, 
+h4.ant-typography,
 .ant-typography {
   color: $mainColor;
   display: block;
@@ -54,27 +55,27 @@ h3.ant-typography,
   }
 }
 
-.userInput {
-  background-color: $BgSecondColor;
-  color: $mainColor;
-  border: 1px solid $secondColor;
-  width: 100%;
-  &:hover {
-      background-color: $BgSecondColor;
-      border: 1px solid $secondColor;
-  }
-  &:focus{
-      background-color: $BgSecondColor;
-      border: 1px solid $secondColor !important;
-  }
-  &::placeholder{
-      color: $thirdColor !important;
-  }
-}
+// .userInput {
+//   background-color: $BgSecondColor;
+//   color: $mainColor;
+//   border: 1px solid $secondColor;
+//   width: 100%;
+//   &:hover {
+//       background-color: $BgSecondColor;
+//       border: 1px solid $secondColor;
+//   }
+//   &:focus{
+//       background-color: $BgSecondColor;
+//       border: 1px solid $secondColor !important;
+//   }
+//   &::placeholder{
+//       color: $thirdColor !important;
+//   }
+// }
 
-.userInput input::placeholder {
-  color: $thirdColor !important;
-}
+// .userInput input::placeholder {
+//   color: $thirdColor !important;
+// }
 
 // Css Search Input
 .searchInput {
@@ -111,7 +112,7 @@ h3.ant-typography,
 }
 
 .ant-modal-content label {
-  color: $fistColor !important;
+  color: $mainColor !important;
 }
 .modal-cancelBtn {
   font-weight: 500;
@@ -129,7 +130,33 @@ h3.ant-typography,
   background-color: $BgThirdColor !important;
   border: 1px solid $fistColor !important;
   color: $mainColor;
+  box-shadow: none !important;
+  // &::placeholder {
+  //   color: $thirdColor !important;
+  // }
 }
 .ant-select .ant-select-arrow {
   color: $mainColor !important;
+}
+
+.ant-picker-input-placeholder >input {
+  color: $thirdColor !important;
+}
+.ant-picker-suffix {
+  color: $mainColor !important;
+}
+
+.ant-select-outlined {
+  border-radius: 8px;
+}
+.ant-select-selector {
+  background-color: $BgSecondColor!important;
+  border: 1px solid $fistColor !important;
+  color: $mainColor !important;
+  border: none !important;
+}
+
+// CSS Ant input status error
+.ant-input-status-error {
+  background-color: $BgSecondColor !important;
 }

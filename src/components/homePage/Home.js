@@ -153,7 +153,7 @@ const Home = () => {
                         <Route path="dashboard" element={<Dashboard />} />
                         <Route path="inventory" element={<Inventory />} />
                         <Route path="delivery" element={<Delivery />} />
-                        <Route path="projects" element={<Projects />} />
+                        <Route path="projects/*" element={<Projects />} />
                         <Route path="main" element={<MainContent />} />
                         <Route path="employees" element={<Employees />} />
                         <Route path="customers" element={<Customers />} />
