@@ -50,7 +50,7 @@ const Login = () => {
                     localStorage.setItem('userInfor', JSON.stringify(decoded))
 
                     message.success('Login successful!')
-                    navigate('/home');
+                    navigate('/home/main');
                 }
 
                 // const userInfor = JSON.parse(localStorage.getItem('userInfor'));

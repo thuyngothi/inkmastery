@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom';
+import { Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Flex, Typography, Menu, Input, Card, Avatar, Modal, Col, Button } from "antd";
 import { BarChartOutlined, UserOutlined, BlockOutlined, DeliveredProcedureOutlined, ProfileOutlined, HomeOutlined, UsergroupAddOutlined, ApartmentOutlined, SearchOutlined, LogoutOutlined } from "@ant-design/icons";
@@ -21,17 +21,17 @@ import Profile from '../profile/Profile';
 
 const { Title, Text } = Typography
 const Home = () => {
-    const [roles, setRoles] = useState([]);
+    const [userRoles, setUserRoles] = useState([]);
     const navigate = useNavigate();
+    const location = useLocation();
 
     // get user Information from Localstorage
     const userInfor = JSON.parse(localStorage.getItem('userInfor'))
 
     useEffect(() => {
         if (userInfor && userInfor.Permission) {
-            setRoles(userInfor.Permission)
+            setUserRoles(userInfor.Permission)
         }
-        navigate('main')
     }, [])
 
     // Function handle Logout Logic
@@ -102,8 +102,12 @@ const Home = () => {
             roles: 'Admin',
         }
     ]
-    const items = menuItem.filter((item) => {
-        return roles.includes(item.roles)
+    const currentPath = location.pathname;
+    const defaultSelectedKey = menuItem.find(item => currentPath.includes(item.key)).key;
+
+    // Logic get list visible features based on user's roles
+    const visibleFeatures = menuItem.filter((item) => {
+        return userRoles.includes(item.roles)
     })
 
 
@@ -117,10 +121,10 @@ const Home = () => {
 
                 <Menu
                     mode='inline'
-                    defaultSelectedKeys={['main']}
+                    defaultSelectedKeys={defaultSelectedKey}
                     className={styles.sidebarMenu}
                 >
-                    {items.map(item => (
+                    {visibleFeatures.map(item => (
                         <Menu.Item key={item.key} icon={item.icon} onClick={() => navigate(item.key)}>
                             {item.label}
                         </Menu.Item>
