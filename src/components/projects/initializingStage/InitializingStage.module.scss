@@ -1,0 +1,56 @@
+@import '../../colors';
+
+.activeStage {
+    color: $fistColor;
+}
+.activeStage span{
+    color: $fistColor;
+}
+
+.projectDetailImg {
+    height: max-content;
+    border-right: 1px solid $thirdColor;
+}
+.projectDetailImg img {
+    max-width: 95%;
+}
+
+.generalInfor{
+    padding: 16px 24px;
+}
+.mainInfor{
+    border: 1px solid $thirdColor;
+    border-radius: 8px;
+}
+.userInfor{
+    padding: 16px;
+}
+.price {
+    padding: 16px;
+}
+
+.inforItem {
+    background-color: $BgThirdColor;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+@media (max-width: 991px){    
+    
+    .projectDetailImg {
+        border-right: none;
+    }
+    .projectDetailImg img {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 767px){
+    .iconStage {
+        font-size: 30px;
+    }
+}
+
+    

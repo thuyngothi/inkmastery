@@ -1,53 +1,131 @@
 import { useState } from 'react'
 import { Button, Col, Divider, Flex, Typography } from 'antd'
 import { CloseOutlined, FundProjectionScreenOutlined, RightOutlined, FileImageOutlined, FileDoneOutlined, DeliveredProcedureOutlined } from '@ant-design/icons'
-import { useSelectedProject } from '../../App'
+import clsx from 'clsx'
+import { useNavigate } from 'react-router-dom'
 
-import initialization from '../../assets/images/iconify-svg/trending.svg'
-import design from '../../assets/images/iconify-svg/address.svg'
-import handle from '../../assets/images/iconify-svg/payment.svg'
-import delivery from '../../assets/images/iconify-svg/cart.svg'
+import { useSelectedProject } from '../../App'      // this function is aim to get value of Context Provider
 
 import styles from './Project.module.scss'
-import clsx from 'clsx'
+import InitializingStage from './initializingStage/InitializingStage'
+
 
 const { Title, Text } = Typography
 const ProjectProcess = () => {
-    const { selectedProject, setSelectedProject } = useSelectedProject();
+    const { selectedProject } = useSelectedProject();
 
-    const startDate = new Date(selectedProject.startDate)
-    const expectedEndDate = new Date(selectedProject.expectedEndDate)
+    const [activeStage, setActiveStage] = useState(0)
+    const [doneStage, setDoneStage] = useState([0])
+    const navigate = useNavigate()
+
+    const handleChooseStage = (value) => {
+        switch (value) 
+        {
+            case 0: {
+                if(doneStage.includes(1)){
+                    // setDoneStage(prev => [...prev.slice(0,1)])
+                    setDoneStage(prev => prev.slice(0,1))
+                    setActiveStage(0);
+                    break;
+                }
+                break;
+            }
+            case 1: {
+                if (doneStage.includes(2)) {
+                    // setDoneStage(prev => [...prev.slice(0,2)])
+                    setDoneStage(prev => prev.slice(0,2))
+                    setActiveStage(1)
+                    break;
+                } else {
+                    if (!doneStage.includes(1)) {
+                        setActiveStage(1)
+                        doneStage.push(1)
+                        break;
+                    }
+                    break;
+                }
+            }
+            case 2: {
+                if (!doneStage.includes(1)) {
+                    setActiveStage(1)
+                    doneStage.push(1)
+                    break;
+                } else {
+                    if (!doneStage.includes(2)) {
+                        doneStage.push(2)
+                        setActiveStage(2)
+                        break;
+                    }else{
+                        if(doneStage.includes(3)){
+                            // setDoneStage(prev => [...prev.slice(0,3)])
+                            setDoneStage(prev => prev.slice(0,3))
+                            setActiveStage(2)
+                        }
+                    }
+                }
+            }
+            case 3: {
+                if (!doneStage.includes(2)) {                  
+                    // setActiveStage(2)
+                    // doneStage.push(2)
+                    handleChooseStage(2);
+                    break;
+                    
+                } else {
+                    if (!doneStage.includes(3)) {
+                        doneStage.push(3)
+                        setActiveStage(3)
+                        break;
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     return (
         <>
             <Flex vertical className={styles.projectProcess}>
                 <Flex align='center' justify='space-between' style={{ width: '100%', padding: '16px' }}>
                     <Title style={{ marginBottom: '0' }} level={3}>Tên dự án: {selectedProject.projectName}</Title>
-                    <button className={styles.closeBtn}>{<CloseOutlined />}</button>
+                    <button className={styles.closeBtn}
+                        onClick={() => navigate('home/projects')}
+                    >
+                        {<CloseOutlined />}
+                        </button>
                 </Flex>
 
                 <Flex justify='center' gap='middle' className={styles.navMenu}>
-                    <Flex gap='middle' align='center' vertical className={styles.iconStage}>
+                    <Flex gap='small' align='center' vertical
+                        className={clsx(styles.iconStage, { [styles.activeStage]: doneStage.includes(0) })}
+                        onClick={() => handleChooseStage(0)}
+                    >
                         {<FundProjectionScreenOutlined />}
                         <Text>Dự án</Text>
                     </Flex>
-                    <Flex gap='middle'>
+                    <Flex gap='middle' className={{ [styles.activeStage]: doneStage.includes(1) }}
+                        onClick={() => handleChooseStage(1)}
+                    >
                         {<RightOutlined />}
-                        <Flex gap='middle' align='center' vertical className={styles.iconStage}>
+                        <Flex gap='small' align='center' vertical className={styles.iconStage}>
                             {<FileImageOutlined />}
                             <Text>Thiết kế</Text>
                         </Flex>
                     </Flex>
-                    <Flex gap='middle'>
+                    <Flex gap='middle' className={{ [styles.activeStage]: doneStage.includes(2) }}
+                        onClick={() => handleChooseStage(2)}
+                    >
                         {<RightOutlined />}
-                        <Flex gap='middle' align='center' vertical className={styles.iconStage}>
+                        <Flex gap='small' align='center' vertical className={styles.iconStage}>
                             {<FileDoneOutlined />}
                             <Text>In ấn</Text>
                         </Flex>
                     </Flex>
-                    <Flex gap='middle'>
+                    <Flex gap='middle' className={{ [styles.activeStage]: doneStage.includes(3) }}
+                        onClick={() => handleChooseStage(3)}
+                    >
                         {<RightOutlined />}
-                        <Flex gap='middle' align='center' vertical className={styles.iconStage}>
+                        <Flex gap='small' align='center' vertical className={styles.iconStage}>
                             {<DeliveredProcedureOutlined />}
                             <Text>Giao hàng</Text>
                         </Flex>
@@ -57,46 +135,7 @@ const ProjectProcess = () => {
                 <Divider style={{ backgroundColor: '#d6d9e485', margin: '0' }}></Divider>
 
                 <Flex wrap className={styles.stageContent}>
-                    <Col xs={24} md={12} lg={7} className={styles.projectDetailImg}>
-                        <img src={selectedProject.imageDescription}></img>
-                    </Col>
-
-                    <Col xs={24} sm={12} md={12} lg={9} className={styles.generalInfor}>
-                        <Text>Tên dự án: {selectedProject.projectName}</Text>
-                        <Text>Ngày Tạo: {` ${startDate.getDate()}/${startDate.getMonth() + 1}/${startDate.getFullYear()}`}</Text>
-                        <Text>Ngày dự kiến: {` ${expectedEndDate.getDate()}/${expectedEndDate.getMonth() + 1}/${expectedEndDate.getFullYear()}`}</Text>
-                        <Text>Yêu cầu khách hàng: {selectedProject.requestDescriptionFromCustomer}</Text>
-                        <Text>Mô tả: {selectedProject.description}</Text>
-                    </Col>
-
-                    <Col xs={24} sm={12} md={24} lg={8} className={styles.mainInfor}>
-                        <Flex vertical className={styles.userInfor}>
-                            <Title level={4}>Thông tin dự án</Title>
-                            <Flex wrap>
-                                <Col xs={24} md={12} lg={24}>
-                                    <Flex vertical className={styles.inforItem}>
-                                        <Text>Người phụ trách: {selectedProject.leader}</Text>
-                                        <Text>Số điện thoại: {selectedProject.phoneLeader}</Text>
-                                        <Text>Email: {selectedProject.emailLeader}</Text>
-                                    </Flex>
-                                </Col>
-                                <Col xs={24} md={12} lg={24}>
-                                    <Flex vertical className={styles.inforItem}>
-                                        <Text>Khách hàng: {selectedProject.customer}</Text>
-                                        <Text>Số điện thoại: {selectedProject.phoneCustomer}</Text>
-                                        <Text>Email: {selectedProject.emailCustomer}</Text>
-                                        <Text>Địa chỉ: {selectedProject.addressCustomer}</Text>
-                                    </Flex>
-                                </Col>
-                            </Flex>
-                        </Flex>
-
-                        <Divider style={{ backgroundColor: '#d6d9e485', margin: '0' }}></Divider>
-                        <Flex justify='space-between' className={styles.price}>
-                            <Text>Giá dự án</Text>
-                            <Text>{Number(selectedProject.startingPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-                        </Flex>
-                    </Col>
+                    <InitializingStage />
                 </Flex>
             </Flex>
 
