@@ -8,6 +8,9 @@ import { useSelectedProject } from '../../App'      // this function is aim to g
 
 import styles from './Project.module.scss'
 import InitializingStage from './initializingStage/InitializingStage'
+import DesigningStage from './designingStage/DesigningStage'
+import HandingStage from './handlingStage/HandingStage'
+import DeliveringStage from './deliveringStage/DeliveringStage'
 
 
 const { Title, Text } = Typography
@@ -89,7 +92,7 @@ const ProjectProcess = () => {
                 <Flex align='center' justify='space-between' style={{ width: '100%', padding: '16px' }}>
                     <Title style={{ marginBottom: '0' }} level={3}>Tên dự án: {selectedProject.projectName}</Title>
                     <button className={styles.closeBtn}
-                        onClick={() => navigate('home/projects')}
+                        // onClick={() => navigate('/home/projects')}
                     >
                         {<CloseOutlined />}
                         </button>
@@ -135,7 +138,10 @@ const ProjectProcess = () => {
                 <Divider style={{ backgroundColor: '#d6d9e485', margin: '0' }}></Divider>
 
                 <Flex wrap className={styles.stageContent}>
-                    <InitializingStage />
+                    {activeStage === 0 && <InitializingStage handle = {handleChooseStage}/>}
+                    {activeStage === 1 && <DesigningStage />}
+                    {activeStage === 2 && <HandingStage />}
+                    {activeStage === 3 && <DeliveringStage />}
                 </Flex>
             </Flex>
 

@@ -84,9 +84,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
 
     // Logic set value on Change
     const fileChange = (e) => {
-        console.log(e.target)
         const file = e.target.files[0]
-        console.log(file)
         file.preview = URL.createObjectURL(file)
         setAvatar(file)
 

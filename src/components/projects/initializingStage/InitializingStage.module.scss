@@ -1,18 +1,12 @@
 @import '../../colors';
 
-.activeStage {
-    color: $fistColor;
-}
-.activeStage span{
-    color: $fistColor;
-}
-
 .projectDetailImg {
     height: max-content;
     border-right: 1px solid $thirdColor;
 }
 .projectDetailImg img {
     max-width: 95%;
+    border-radius: 4px;
 }
 
 .generalInfor{
@@ -34,6 +28,14 @@
     margin: 8px;
     padding: 8px;
     border-radius: 8px;
+}
+
+.toDesignStage {
+    margin-top: 16px;
+    width: 100%;
+}
+.toDesignStage span {
+    margin-bottom: 0;
 }
 
 @media (max-width: 991px){    

@@ -10,26 +10,33 @@ import UpdatePass from './components/forgotPass/UpdatePass.js';
 import ProjectProcess from './components/projects/ProjectProcess.js';
 
 const projectContext = createContext()
+const userContext = createContext()
 
 function App() {
-  const [selectedProject, setSelectedProject] = useState(null)
+  const [selectedProject, setSelectedProject] = useState({})
+  const [userPermission, setUserPermission] = useState();
 
   return (
-    <projectContext.Provider value={{selectedProject, setSelectedProject}}>
-      <div className="App">
-        <Routes>
-          <Route path='/' element={<Login />} />
-          <Route path='/forgotPassword' element={<ForgotPass />} />
-          <Route path='/updatePassword' element={<UpdatePass />} />
-          <Route path='/register' element={<Register />} />
-          <Route path='/home/*' element={<Home />} />
-          <Route path='/home/projects/project_process' element={<ProjectProcess />} />
-        </Routes>
-      </div>
-    </projectContext.Provider>
+    <userContext.Provider value={{userPermission, setUserPermission}}>
+      <projectContext.Provider value={{ selectedProject, setSelectedProject }}>
+        <div className="App">
+          <Routes>
+            <Route path='/' element={<Login />} />
+            <Route path='/forgotPassword' element={<ForgotPass />} />
+            <Route path='/updatePassword' element={<UpdatePass />} />
+            <Route path='/register' element={<Register />} />
+            <Route path='/home/*' element={<Home />} />
+            <Route path='/home/projects/project_process' element={<ProjectProcess />} />
+          </Routes>
+        </div>
+      </projectContext.Provider>
+    </userContext.Provider>
   );
 }
 
-export const useSelectedProject = () => useContext(projectContext);
+const useUserPermission = () => useContext(userContext)
+const useSelectedProject = () => useContext(projectContext);
+export { useUserPermission, useSelectedProject}
+
 
 export default App;
