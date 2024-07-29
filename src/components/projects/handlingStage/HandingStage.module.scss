@@ -1,0 +1,12 @@
+@import '../../colors';
+
+.projectDetail label {
+    color: $mainColor !important;
+}
+
+.formItem {
+    width: 46%;
+}
+.formItem input {
+    color: $thirdColor !important;
+}

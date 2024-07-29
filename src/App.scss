@@ -13,6 +13,7 @@ $BgThirdColor: #2f3349;
 
 h3.ant-typography, 
 h4.ant-typography,
+h5.ant-typography,
 .ant-typography {
   color: $mainColor;
   display: block;
@@ -48,6 +49,7 @@ h4.ant-typography,
   color: #fff;
   font-weight: 600;
   font-size: 16px;
+  box-shadow: none;
   &:hover {
       color: #fff !important;
       font-weight: 600;

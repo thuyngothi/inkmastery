@@ -1,0 +1,87 @@
+@import '../../colors';
+
+
+.designingImg {
+    margin-bottom: 16px;
+}
+.designingImg img {
+    max-width: 95%;
+}
+
+.cardImg {
+    padding: 4px;
+    width: 35%;
+    background-color: $BgSecondColor;
+}
+.approveBtn {
+    margin-top: 8px;
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+}
+.approveBtn span {
+    margin-bottom: 0;
+}
+.uploadBtn {
+    margin: 16px;
+    background-color: $BgThirdColor;
+    border: none;
+    color: $fistColor !important;
+    font-size: 16px;
+    &:hover{
+        background-color: $BgSecondColor !important;
+    }
+}
+.uploadBtn span{
+    margin-bottom: 0;
+}
+
+// Project information
+.mainInfor{
+    border: 1px solid $thirdColor;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+.inforItem {
+    background-color: $BgThirdColor;
+    margin: 8px;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.formResponse span {
+    margin-bottom: 0;
+    color: $mainColor !important;
+}
+
+@media (max-width: 575px){          // For x-small(xs) screen
+    .designList{
+        justify-content: center;
+    }
+    .cardImg {
+        width: 95%;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 991px){       // for small(sm) and medium(md) screen
+    .designList{
+        justify-content: space-between;
+        padding: 0 30px;
+    }
+    .cardImg {
+        width: 46%;
+    }
+}
+
+@media (min-width: 992px) and (max-width: 1200px){       // For large(lg) screen
+    .cardImg {
+        width: 45%;
+    }
+}
+
+@media (min-width: 1201px){
+    .cardImg {
+        width: 30%;
+    }
+}

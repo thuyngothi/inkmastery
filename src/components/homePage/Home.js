@@ -19,8 +19,12 @@ import Customers from "../customers/Customers"
 import Department from "../departments/Departments"
 import Profile from '../profile/Profile';
 
+import { useUserInfor, useUserPermission } from '../../App';
+
 const { Title, Text } = Typography
 const Home = () => {
+    const { setUserPermission } = useUserPermission()
+
     const [userRoles, setUserRoles] = useState([]);
     const navigate = useNavigate();
     const location = useLocation();
@@ -31,6 +35,7 @@ const Home = () => {
     useEffect(() => {
         if (userInfor && userInfor.Permission) {
             setUserRoles(userInfor.Permission)
+            setUserPermission(userInfor.Permission)
         }
     }, [])
 

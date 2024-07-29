@@ -69,6 +69,7 @@
 .iconStage {
     font-size: 40px;
     color: $mainColor;
+    cursor: pointer;
 }
 
 // CSS Stage content
@@ -81,3 +82,9 @@
     margin-bottom: 8px;
 }
 
+.activeStage {
+    color: $fistColor;
+}
+.activeStage span{
+    color: $fistColor;
+}

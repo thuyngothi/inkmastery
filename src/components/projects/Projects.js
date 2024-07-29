@@ -85,7 +85,7 @@ const Projects = () => {
                                         cover={
                                             <Flex style={{ padding: '4px' }}>
                                                 <div style={{
-                                                    justifySelf: 'center',
+                                                    // justifySelf: 'center',
                                                     backgroundImage: `url(${item.imageDescription})`,
                                                     backgroundSize: 'cover',
                                                     height: '200px',
