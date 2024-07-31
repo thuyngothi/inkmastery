@@ -121,7 +121,7 @@ const DesigningStage = () => {
         }
         setLoading(false)
     }
-
+    
     const options = [
         {
             value: 'Agree',
@@ -191,7 +191,7 @@ const DesigningStage = () => {
                                         <Flex>
                                             <div style={{
                                                 borderRadius: '8px',
-                                                backgroundImage: `url(${selectedProject.imageDescription})`,
+                                                backgroundImage: `url(${design.designImage})`,
                                                 backgroundSize: 'cover',
                                                 height: '200px',
                                             }}>
@@ -201,7 +201,9 @@ const DesigningStage = () => {
                                 >
                                     <Text>Người tạo: {design.designer}</Text>
                                     <Text>Ngày tạo: {`${createDate.getDate()}/${createDate.getMonth() + 1}/${createDate.getFullYear()}`}</Text>
-                                    <Text>Trạng thái: {design.designStatus}</Text>
+                                    {design.designStatus === 'NotYetApproved' && <Text>Trạng thái: Chưa xem xét</Text>}
+                                    {design.designStatus === 'Refuse' && <Text>Trạng thái: <span style={{color:'#c73e3e'}}>Không được duyệt</span></Text>}
+                                    {design.designStatus === 'HasBeenApproved' && <Text>Trạng thái: <span style={{color:'#15b468'}}>Đã được duyệt</span></Text>}
                                     {
                                         !hasApprovedDesign &&
                                         currentUser.Email === selectedProject.emailLeader &&

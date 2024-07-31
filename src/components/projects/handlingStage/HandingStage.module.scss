@@ -1,6 +1,6 @@
 @import '../../colors';
 
-.projectDetail label {
+.printInfor label {
     color: $mainColor !important;
 }
 
@@ -9,4 +9,38 @@
 }
 .formItem input {
     color: $thirdColor !important;
+}
+
+.createdDate span{
+    margin-bottom: 0;
+    color: $thirdColor;
+}
+.mainInforContainer {
+    border: 1px solid $thirdColor;
+    border-radius: 8px;
+}
+.mainInfor{
+    padding: 16px;
+}
+.mainInfor span{
+    font-size: 16px;
+}
+.projectImg {
+    width: 60%;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.totalPrice{
+    padding: 16px;
+}
+.totalPrice span {
+    margin-bottom: 0;
+    font-size: 18px;
+}
+
+@media (max-width: 1200px){
+    .projectImg {
+        width: 95%;
+    }
 }
