@@ -181,28 +181,31 @@ const Employee = () => {
         {
             title: 'THAO TÁC',
             key: 'action',
-            render: (_, record) => (
-                <Space size="middle">
-                    <Button className={clsx(styles.btn, styles.changeManagementBtn)}
-                        shape="circle"
-                        onClick={() => openEditDepartment(record)}
-                    >
-                        {<UserAddOutlined />}
-                    </Button>
-                    <Button className={clsx(styles.btn, styles.addRoleBtn)}
-                        shape="circle"
-                        onClick={() => openEditRoles(record)}
-                    >
-                        {<UsergroupAddOutlined />}
-                    </Button>
-                    <Button className={clsx(styles.btn, styles.deleteBtn)}
-                        shape="circle"
-                        onClick={openDelete}
-                    >
-                        {<DeleteOutlined />}
-                    </Button>
-                </Space>
-            ),
+            render: (_, record) => {
+                console.log(record)
+                return (
+                    <Space size="middle">
+                        <Button className={clsx(styles.btn, styles.changeManagementBtn)}
+                            shape="circle"
+                            onClick={() => openEditDepartment(record)}
+                        >
+                            {<UserAddOutlined />}
+                        </Button>
+                        <Button className={clsx(styles.btn, styles.addRoleBtn)}
+                            shape="circle"
+                            onClick={() => openEditRoles(record)}
+                        >
+                            {<UsergroupAddOutlined />}
+                        </Button>
+                        <Button className={clsx(styles.btn, styles.deleteBtn)}
+                            shape="circle"
+                            onClick={openDelete}
+                        >
+                            {<DeleteOutlined />}
+                        </Button>
+                    </Space>
+                )
+            },
         },
     ]
 
@@ -279,6 +282,7 @@ const Employee = () => {
                         <Button className="modal-cancelBtn" onClick={closeDelete}>Thoát</Button>
                     </Flex>
                 </Modal>
+
                 <Table className={styles.tableEmployee} columns={columns} dataSource={employees} />
             </Flex>
         </>

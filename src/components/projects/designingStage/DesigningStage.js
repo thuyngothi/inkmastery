@@ -10,6 +10,7 @@ import styles from './DesigningStage.module.scss'
 import axios from 'axios'
 
 const { Title, Text } = Typography
+
 const DesigningStage = () => {
     const token = localStorage.getItem('token')
     const instance = axios.create({
@@ -28,7 +29,8 @@ const DesigningStage = () => {
     const [data, setData] = useState({})
     const [loading, setLoading] = useState(false)
 
-    const [hasApprovedDesign, setHasApprovedDesign] = useState(false)
+    const [approvedDesign, setApprovedDesign] = useState(false)
+
     const currentUser = JSON.parse(localStorage.getItem('userInfor'))
     const [currentUserTeam, setCurrentUserTeam] = useState('')
 
@@ -43,7 +45,7 @@ const DesigningStage = () => {
     },[])
     console.log(currentUserTeam)
 
-    //Logic set Selected project if changed
+    //Logic re-set Selected project if changed
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -55,7 +57,7 @@ const DesigningStage = () => {
                     //Check if list design has an approved design
                     const approvedDesign = response.data.designs.find(item => item.designStatus === 'HasBeenApproved')
                     if (approvedDesign) {
-                        setHasApprovedDesign(true)
+                        setApprovedDesign(approvedDesign)
                     }
                 }
             } catch (error) {
@@ -205,7 +207,7 @@ const DesigningStage = () => {
                                     {design.designStatus === 'Refuse' && <Text>Trạng thái: <span style={{color:'#c73e3e'}}>Không được duyệt</span></Text>}
                                     {design.designStatus === 'HasBeenApproved' && <Text>Trạng thái: <span style={{color:'#15b468'}}>Đã được duyệt</span></Text>}
                                     {
-                                        !hasApprovedDesign &&
+                                        !(!!approvedDesign) &&
                                         currentUser.Email === selectedProject.emailLeader &&
                                         <Button className={clsx('submitBtn', styles.approveBtn)}
                                             onClick={() => handleOpenApprove(design.id)}
@@ -248,7 +250,7 @@ const DesigningStage = () => {
                     </Modal>
                 </Flex>
                 {
-                    !hasApprovedDesign &&
+                    !(!!approvedDesign) &&
                     currentUser.Permission.includes('Designer') &&
                     currentUserTeam === 'Technical' &&
                     <Button className={styles.uploadBtn}
@@ -320,5 +322,6 @@ const DesigningStage = () => {
         </>
     )
 }
+
 
 export default DesigningStage;
