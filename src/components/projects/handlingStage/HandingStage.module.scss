@@ -5,19 +5,56 @@
 }
 
 .formItem {
-    width: 46%;
+    width: 48%;
+    padding: 0 16px;
 }
 .formItem input {
     color: $thirdColor !important;
+}
+
+.formItemResource {
+    width: 100%;
 }
 
 .createdDate span{
     margin-bottom: 0;
     color: $thirdColor;
 }
+.formItemResource{
+    margin-bottom: 24px;
+    width: 100%;
+    padding-right: 20px;
+}
+.formItemResource span{
+    margin-bottom: 0;
+}
+
+.setQuantity {
+    width: 100%;
+    padding-bottom: 8px;
+    border-bottom: 1px solid $thirdColor;
+}
+.setQuantity input {
+    width: 60px;
+    margin: 0 8px;
+    text-align: center;
+    font-weight: 600;
+    background-color: $BgMainColor;
+    color: $mainColor;
+}
+.increasingBtn,
+.decreasingBtn {
+    width: 40px;
+    border-radius: 4px;
+    // margin: 0 8px;
+    box-sizing: border-box;
+}
+
+// CSS Main Content
 .mainInforContainer {
     border: 1px solid $thirdColor;
     border-radius: 8px;
+    margin-bottom: 16px;
 }
 .mainInfor{
     padding: 16px;
@@ -37,6 +74,15 @@
 .totalPrice span {
     margin-bottom: 0;
     font-size: 18px;
+}
+.printBtn {
+    padding: 8px 12px;
+    width: 100%;
+    border-radius: 6px;
+    vertical-align: center;
+}
+.printBtn span {
+    margin-bottom: 0;
 }
 
 @media (max-width: 1200px){

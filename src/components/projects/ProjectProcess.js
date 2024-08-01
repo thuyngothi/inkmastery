@@ -140,7 +140,7 @@ const ProjectProcess = () => {
                 <Flex wrap className={styles.stageContent}>
                     {activeStage === 0 && <InitializingStage handle = {handleChooseStage}/>}
                     {activeStage === 1 && <DesigningStage />}
-                    {activeStage === 2 && <HandingStage />}
+                    {activeStage === 2 && <HandingStage handle = {handleChooseStage}/>}
                     {activeStage === 3 && <DeliveringStage />}
                 </Flex>
             </Flex>

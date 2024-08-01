@@ -1,21 +1,144 @@
-import { useState } from 'react'
-import { Button, Col, Divider, Flex, Form, Input, Typography } from 'antd'
-import { CalendarOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
+import { Button, Col, Divider, Flex, Form, Input, message, Table, Typography } from 'antd'
+import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons'
+import axios from 'axios'
 import { useSelectedProject } from '../../../App'
 
 import styles from './HandingStage.module.scss'
+import clsx from 'clsx'
 
 const { Title, Text } = Typography
-const HandingStage = () => {
+
+const HandingStage = ({ handle }) => {
+    const token = localStorage.getItem('token')
+    const instance = axios.create({
+        baseURL: 'https://localhost:44389',
+        timeout: 5000,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+
     const { selectedProject } = useSelectedProject()
-    const [displayData, setDisplayData] = useState({});
+    const [postData, setPostData] = useState({});
+
+    const [resourceForPrints, setResourceForPrints] = useState([])
+    const [resourceProperties, setResourceProperties] = useState([])
 
     const createdDate = new Date(selectedProject.startDate)
+
+    // Logic get approve design 
+    useEffect(() => {
+        const approvedDesign = selectedProject.designs.find(item => item.designStatus === 'HasBeenApproved')
+        if (approvedDesign) {
+            setPostData(prev => ({
+                ...prev,
+                designId: approvedDesign.id
+            }))
+        }
+
+        const fetchData = async () => {
+            try {
+                const response = await instance.get('api/Admin/GetAllResourceType')
+                if (response.status === 200) {
+                    setResourceProperties(prev => {
+                        const stationery = response.data[0].resources.find(item => item.resourceName === 'Văn phòng phẩm')
+                        if (stationery) {
+                            setResourceProperties(() => {
+                                const result = stationery.resourceProperties.map(item => {
+                                    return {
+                                        id: item.resourcePropertyDetails[0].id,
+                                        name: item.resourcePropertyDetails[0].name,
+                                        quantity: 0,
+                                        inventoryQuantity: item.resourcePropertyDetails[0].quantity
+                                    }
+                                })
+                                return result
+                            });
+
+                            // setResourceForPrints(() => {
+                            //     const result = stationery.resourceProperties.map(item => {                                 
+                            //         return {
+                            //             resourcePropertyDetailId: item.resourcePropertyDetails[0].id,
+                            //             quantity: 0,
+                            //         }
+                            //     })                               
+                            //     return result
+                            // })
+                        }
+                    })
+                }
+            } catch (error) {
+                console.error('Lỗi: ', error)
+            }
+        }
+        fetchData()
+
+    }, [])
+
+    useEffect(() => {
+        if (resourceProperties) {
+            const result = resourceProperties.filter(item => item.quantity > 0).map(item => {
+                return {
+                    resourcePropertyDetailId: item.id,
+                    quantity: item.quantity,
+                }
+            })
+            setResourceForPrints(result)
+        }
+    }, [resourceProperties])
+
+    // Logic Increate quantity
+    const handleIncreaseQuantity = (index) => {
+        const newData = [...resourceProperties];
+        newData[index].quantity += 1;
+        setResourceProperties(newData)
+    }
+
+    // Logic Decreate quantity
+    const handleDecreaseQuantity = (index) => {
+        const newData = [...resourceProperties];
+        if (newData[index].quantity > 0) {
+            newData[index].quantity -= 1;
+            setResourceProperties(newData)
+        }
+    }
+
+    const onQuantityChange = (index, e) => {
+        const newData = [...resourceProperties];
+        newData[index].quantity = Number(e.target.value);
+        setResourceProperties(newData)
+    }
+
+    const handlePrint = async() => {
+        await setPostData(prev => ({
+            ...prev,
+            resourceForPrints: [...resourceForPrints]
+        }));
+        
+        if (!resourceForPrints) {
+            message.error('Vui lòng chọn tài nguyên để in!');
+            return;
+        }
+
+        try{
+            const response = await instance.post('api/Admin/CreatePrintJob', postData)
+            console.log(response)
+            if(response.data.status === 200){
+                message.success(response.data.message)
+                delete(postData.resourceForPrints)
+                handle(3)
+            }
+        }catch(error){
+            console.error('Lỗi: ', error)
+        }
+    }
+
     return (
         <>
             <Col xs={24} xl={16} className={styles.printInfor}>
                 <Form layout='vertical'>
-                    <Flex gap='middle'>
+                    <Flex gap='middle' justify='space-between'>
                         <Form.Item label='Mã đơn hàng' className={styles.formItem}>
                             <Input
                                 name='projectId'
@@ -32,7 +155,7 @@ const HandingStage = () => {
                         </Form.Item>
                     </Flex>
 
-                    <Flex gap='middle'>
+                    <Flex gap='middle' justify='space-between'>
                         <Form.Item label='Quản lý' className={styles.formItem}>
                             <Input
                                 name='leader'
@@ -51,7 +174,7 @@ const HandingStage = () => {
                         </Form.Item>
                     </Flex>
 
-                    <Flex gap='middle'>
+                    <Flex gap='middle' justify='space-between' wrap>
                         <Form.Item label='Loại máy móc' className={styles.formItem}>
                             <Input
                                 name='machine'
@@ -59,11 +182,29 @@ const HandingStage = () => {
                                 value='Máy in 3D'
                             />
                         </Form.Item>
-                        <Form.Item label='TÀI NGUYÊN' className={styles.formItem}>
-                            <Input
-                                name='printResource'
-                            />
-                        </Form.Item>
+                        <Col xs={24} lg={11}>
+                            <Flex gap='small' vertical className={styles.formItemResource}>
+                                <Flex justify='space-around' style={{ width: '100%' }}>
+                                    <Flex style={{ width: '30%' }} justify='center'><Text>TÀI NGUYÊN</Text></Flex>
+                                    <Flex style={{ width: '40%' }} justify='center'><Text> SỐ LƯỢNG IN</Text></Flex>
+                                    <Flex style={{ width: '30%' }} justify='center'><Text>SỐ LƯỢNG CÒN</Text></Flex>
+                                </Flex>
+
+                                {!!resourceProperties &&
+                                    resourceProperties.map((item, index) => (
+                                        <Flex align='center' justify='space-around' className={styles.setQuantity}>
+                                            <Flex style={{ width: '30%' }} justify='center'><Text>{item.name}</Text></Flex>
+                                            <Flex style={{ width: '40%' }} justify='center'>
+                                                <button className={clsx('submitBtn', styles.decreasingBtn)} onClick={() => handleDecreaseQuantity(index)}>-</button>
+                                                <Input value={item.quantity} type='number' onChange={(event) => onQuantityChange(index, event)} />
+                                                <button className={clsx('submitBtn', styles.increasingBtn)} onClick={() => handleIncreaseQuantity(index)}>+</button>
+                                            </Flex>
+                                            <Flex style={{ width: '30%' }} justify='center'><Text>{item.inventoryQuantity}</Text></Flex>
+                                        </Flex>
+                                    ))
+                                }
+                            </Flex>
+                        </Col>
                     </Flex>
                 </Form>
             </Col>
@@ -98,7 +239,13 @@ const HandingStage = () => {
                         <Text>{Number(selectedProject.startingPrice).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                     </Flex>
                 </Flex>
-
+                <Flex justify='flex-end'>
+                    <Button className={clsx('submitBtn', styles.printBtn)}
+                        onClick={handlePrint}
+                    >
+                        Bắt đầu in {<ArrowRightOutlined />}
+                    </Button>
+                </Flex>
             </Col>
         </>
     )
