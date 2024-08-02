@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Col, Divider, Flex, Form, Input, message, Table, Typography } from 'antd'
+import { Button, Col, Divider, Flex, Form, Input, message, Typography } from 'antd'
 import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import axios from 'axios'
 import { useSelectedProject } from '../../../App'
@@ -25,11 +25,13 @@ const HandingStage = ({ handle }) => {
     const [resourceForPrints, setResourceForPrints] = useState([])
     const [resourceProperties, setResourceProperties] = useState([])
 
-    const createdDate = new Date(selectedProject.startDate)
+    const [printingJobs, setPrintingJobs] = useState([])
 
-    // Logic get approve design 
+    const createdDate = new Date(selectedProject.startDate)
+    const approvedDesign = selectedProject.designs.find(item => item.designStatus === 'HasBeenApproved')
+
+    // Logic get approve design and set initial array resourceProperties
     useEffect(() => {
-        const approvedDesign = selectedProject.designs.find(item => item.designStatus === 'HasBeenApproved')
         if (approvedDesign) {
             setPostData(prev => ({
                 ...prev,
@@ -37,12 +39,12 @@ const HandingStage = ({ handle }) => {
             }))
         }
 
-        const fetchData = async () => {
+        const fetchDataResource = async () => {
             try {
-                const response = await instance.get('api/Admin/GetAllResourceType')
-                if (response.status === 200) {
+                const resourceType = await instance.get('api/Admin/GetAllResourceType')
+                if (resourceType.status === 200) {
                     setResourceProperties(prev => {
-                        const stationery = response.data[0].resources.find(item => item.resourceName === 'Văn phòng phẩm')
+                        const stationery = resourceType.data[0].resources.find(item => item.resourceName === 'Văn phòng phẩm')
                         if (stationery) {
                             setResourceProperties(() => {
                                 const result = stationery.resourceProperties.map(item => {
@@ -55,16 +57,6 @@ const HandingStage = ({ handle }) => {
                                 })
                                 return result
                             });
-
-                            // setResourceForPrints(() => {
-                            //     const result = stationery.resourceProperties.map(item => {                                 
-                            //         return {
-                            //             resourcePropertyDetailId: item.resourcePropertyDetails[0].id,
-                            //             quantity: 0,
-                            //         }
-                            //     })                               
-                            //     return result
-                            // })
                         }
                     })
                 }
@@ -72,10 +64,29 @@ const HandingStage = ({ handle }) => {
                 console.error('Lỗi: ', error)
             }
         }
-        fetchData()
-
+        fetchDataResource()
     }, [])
 
+    // Logic get all printJobs based on approvedDesign
+    useEffect(() => {
+        const fetchDataPrintJobs = async () => {
+            try {
+                const response = await instance.get('api/Admin/GetAllPrintJobs')
+                if (response.status === 200) {
+                    const selectedPrintJobs = response.data.filter(item => item.designId === approvedDesign.id)
+                    if (selectedPrintJobs.length > 0) {
+                        setPrintingJobs(selectedPrintJobs.filter(item => item.printJobStatus === 'Printing'))
+                    }
+                }
+            } catch (error) {
+                console.error('Lỗi: ', error)
+            }
+        }
+        fetchDataPrintJobs();
+    }, [])
+    console.log(printingJobs)
+
+    // Logic set list resource for print if user changes resourceProperties
     useEffect(() => {
         if (resourceProperties) {
             const result = resourceProperties.filter(item => item.quantity > 0).map(item => {
@@ -87,6 +98,14 @@ const HandingStage = ({ handle }) => {
             setResourceForPrints(result)
         }
     }, [resourceProperties])
+
+    // Logic set post data if resourceForPrints changed
+    useEffect(() => {
+        setPostData(prev => ({
+            ...prev,
+            resourceForPrints: [...resourceForPrints]
+        }));
+    }, [resourceForPrints])
 
     // Logic Increate quantity
     const handleIncreaseQuantity = (index) => {
@@ -110,27 +129,53 @@ const HandingStage = ({ handle }) => {
         setResourceProperties(newData)
     }
 
-    const handlePrint = async() => {
-        await setPostData(prev => ({
-            ...prev,
-            resourceForPrints: [...resourceForPrints]
-        }));
-        
-        if (!resourceForPrints) {
+    const handlePrint = async () => {
+        if (!postData.designId) {
+            message.error('Chưa có thiết kế được phê duyệt')
+            return
+        }
+        else if (resourceForPrints.length === 0) {
             message.error('Vui lòng chọn tài nguyên để in!');
             return;
         }
 
-        try{
+        try {
             const response = await instance.post('api/Admin/CreatePrintJob', postData)
             console.log(response)
-            if(response.data.status === 200){
+            if (response.data.status === 200) {
                 message.success(response.data.message)
-                delete(postData.resourceForPrints)
-                handle(3)
+                delete (postData.resourceForPrints)
+                // handle(3)
+            } else {
+                message.error(response.data.message)
             }
-        }catch(error){
+        } catch (error) {
             console.error('Lỗi: ', error)
+        }
+    }
+
+    const handleConfirmPrint = async () => {
+        if (printingJobs.length > 0) {
+            let result = true;
+            for (const item of printingJobs) {
+                console.log(item)
+                try {
+                    const response = await instance.put(`api/Admin/ConfirmDonePrintJob/${item.id}`)
+                    console.log(response)
+                    if (response.data.status !== 200) {
+                        result = false;
+                        message.error(response.data.message)
+                    }
+                } catch (error) {
+                    console.error('Lỗi: ', error)
+                }
+            }
+            if (result) {
+                message.success('Đã xác nhận hoàn thành tất cả các bản in!')
+                handle(3)
+            } else {
+                message.error('Có lỗi xảy ra khi xác nhận hoàn thành in!')
+            }
         }
     }
 
@@ -243,9 +288,19 @@ const HandingStage = ({ handle }) => {
                     <Button className={clsx('submitBtn', styles.printBtn)}
                         onClick={handlePrint}
                     >
-                        Bắt đầu in {<ArrowRightOutlined />}
+                        Bắt đầu in
                     </Button>
                 </Flex>
+                {
+                    printingJobs.length > 0 &&
+                    <Flex justify='flex-end'>
+                        <Button className={clsx('submitBtn', styles.printBtn)}
+                            onClick={handleConfirmPrint}
+                        >
+                            Xác nhận đã hoàn thành in {<ArrowRightOutlined />}
+                        </Button>
+                    </Flex>
+                }
             </Col>
         </>
     )

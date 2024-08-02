@@ -1,0 +1,55 @@
+@import '../../colors';
+
+.inforDelivery {
+    padding-right: 16px;
+    padding-bottom: 16px;
+}
+.inforDelivery span{
+    margin-bottom: 0;
+}
+.announce {
+    background-color: rgba(94, 141, 94, 0.473);
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+.announce span,
+.announce h4 {
+    color: rgb(89, 223, 89) !important;
+
+}
+
+.mainInfor {
+    border: 1px solid $thirdColor;
+    border-radius: 8px;
+}
+.mainInfor span,
+.mainInfor h4 {
+    margin-bottom: 0;
+}
+.mainInfor h4 {
+    padding-top: 12px;
+    padding-left: 12px;
+}
+
+// CSS Modal
+.inforInput{
+    background-color: $BgThirdColor !important;
+    color: $mainColor !important;
+    border-color: $fistColor !important;
+    width: 100%;
+    box-shadow: none !important;
+}
+.inforInput input::placeholder {
+    color: $thirdColor !important;
+}
+.inforInput input{
+    border: none !important;
+    background-color: $BgThirdColor !important;
+}
+
+@media (max-width: 1199px){
+    .inforDelivery {
+        padding-right: 0;
+    }
+}

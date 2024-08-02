@@ -110,6 +110,7 @@ const ModalCreate = ({ open, changeCreateStatus, changeProjectsStatus }) => {
             delete (errors.expectedEndDate)
         }
     };
+    console.log(data)
 
     const handleChange = (e) => {
         console.log(e.target)
