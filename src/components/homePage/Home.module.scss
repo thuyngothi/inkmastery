@@ -34,6 +34,7 @@
     background-color: $BgMainColor;
     width: 80%;
     float: right;
+    min-height: 100vh;
 }
 .content {
     width: 95%;
@@ -76,9 +77,9 @@
 }
 
 @media (max-width: 768px){
-    .sidebar{
-        width: 25%;
-    }
+    // .sidebar{
+    //     width: 25%;
+    // }
     .sidebar img {
         width: 60%;
     }
@@ -86,9 +87,9 @@
         font-size: 20px;
         font-weight: 600;
     }
-    .contentContainer {
-        width: 755;
-    }
+    // .contentContainer {
+    //     width: 755;
+    // }
 }
 
 @media (max-width: 992px){
