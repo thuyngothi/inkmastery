@@ -1,0 +1,42 @@
+@import '../colors';
+
+.deliveryContainer {
+    text-align: left;
+    padding: 16px 0;
+}
+.listDeliveries {
+    background-color: $BgThirdColor;
+    padding: 16px;
+}
+
+.statusSelection{
+    width: 200px !important;
+    text-align: left;
+}
+
+.deliveryItem {
+    min-height: 35px;
+}
+.deliveryDetailItem {
+    padding-right: 12px;
+}
+
+.moreBtn {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    border: none;
+    font-size: 16px;
+    color: $fistColor;
+    background-color: $BgSecondColor;
+}
+
+.modalDetailDelivery span{
+ margin-bottom: 12px;
+}
+.btn {
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 500 !important;
+}

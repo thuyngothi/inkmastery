@@ -1,20 +1,16 @@
 import { useEffect, useState } from "react";
 import { SearchOutlined, UsergroupAddOutlined, EditOutlined, FolderAddOutlined, DeleteOutlined } from "@ant-design/icons";
 import { Button, Col, Divider, Flex, Input, Modal, Typography, Form, Row, Select, message } from "antd"
+import axios from "axios";
+import clsx from "clsx";
+
 
 import styles from './Departments.module.scss'
-import axios from "axios";
 import TextArea from "antd/es/input/TextArea";
-import clsx from "clsx";
+import instance from '../axiosInstance'
 
 const { Title, Text } = Typography
 const Deparments = () => {
-    const token = localStorage.getItem('token')
-    const instance = axios.create({
-        baseURL: 'https://localhost:44389',
-        timeout: 5000,
-        headers: { 'Authorization': `Bearer ${token}` }
-    });
 
     const [departments, setDepartments] = useState([])
     const [isChange, setIsChange] = useState(false)
@@ -135,14 +131,19 @@ const Deparments = () => {
     const handleEdit = async (values) => {
         try {
             const response = await instance.put('api/Admin/UpdateTeam', formData)
-            if (response && response.status === 200) {
+            console.log(response)
+            if (response.data.status === 200) {
                 setIsChange(true)
                 setIsOpenEdit(false);
                 delete formData.id;
                 setFormData({})
+                message.success('Sửa thông tin phòng ban thành công!')
+            } else{
+                message.error(response.data.message)
             }
         } catch (error) {
             console.error('Không thể update phòng ban: ', error)
+            message.error('Không thể update phòng ban!')
         }
     }
 
