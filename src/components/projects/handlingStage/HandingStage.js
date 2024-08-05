@@ -26,6 +26,7 @@ const HandingStage = ({ handle }) => {
     const [resourceProperties, setResourceProperties] = useState([])
 
     const [printingJobs, setPrintingJobs] = useState([])
+    const [isChangePrintingJobs, setIsChangePrintingJobs ] = useState(false)
 
     const createdDate = new Date(selectedProject.startDate)
     const approvedDesign = selectedProject.designs.find(item => item.designStatus === 'HasBeenApproved')
@@ -75,15 +76,18 @@ const HandingStage = ({ handle }) => {
                 if (response.status === 200) {
                     const selectedPrintJobs = response.data.filter(item => item.designId === approvedDesign.id)
                     if (selectedPrintJobs.length > 0) {
-                        setPrintingJobs(selectedPrintJobs.filter(item => item.printJobStatus === 'Printing'))
+                        setPrintingJobs(selectedPrintJobs.filter(item => item.printJobStatus === 'Printing').map(item => ({
+                            printJobId : item.id,
+                        })))
                     }
+                    setIsChangePrintingJobs(false)
                 }
             } catch (error) {
                 console.error('Lỗi: ', error)
             }
         }
         fetchDataPrintJobs();
-    }, [])
+    }, [isChangePrintingJobs])
     console.log(printingJobs)
 
     // Logic set list resource for print if user changes resourceProperties
@@ -145,6 +149,7 @@ const HandingStage = ({ handle }) => {
             if (response.data.status === 200) {
                 message.success(response.data.message)
                 delete (postData.resourceForPrints)
+                setIsChangePrintingJobs(true)
                 // handle(3)
             } else {
                 message.error(response.data.message)
@@ -157,25 +162,26 @@ const HandingStage = ({ handle }) => {
     const handleConfirmPrint = async () => {
         if (printingJobs.length > 0) {
             let result = true;
-            for (const item of printingJobs) {
+            for (let item of printingJobs) {
                 console.log(item)
-                try {
-                    const response = await instance.put(`api/Admin/ConfirmDonePrintJob/${item.id}`)
-                    console.log(response)
-                    if (response.data.status !== 200) {
-                        result = false;
-                        message.error(response.data.message)
-                    }
-                } catch (error) {
-                    console.error('Lỗi: ', error)
-                }
+                console.log(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
+                // try {
+                //     const response = await instance.put(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
+                //     console.log(response)
+                //     if (response.data.status !== 200) {
+                //         result = false;
+                //         message.error(response.data.message)
+                //     }
+                // } catch (error) {
+                //     console.error('Lỗi: ', error)
+                // }
             }
-            if (result) {
-                message.success('Đã xác nhận hoàn thành tất cả các bản in!')
-                handle(3)
-            } else {
-                message.error('Có lỗi xảy ra khi xác nhận hoàn thành in!')
-            }
+            // if (result) {
+            //     message.success('Đã xác nhận hoàn thành tất cả các bản in!')
+            //     handle(3)
+            // } else {
+            //     message.error('Có lỗi xảy ra khi xác nhận hoàn thành in!')
+            // }
         }
     }
 

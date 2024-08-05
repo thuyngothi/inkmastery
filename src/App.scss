@@ -157,6 +157,9 @@ h5.ant-typography,
   color: $mainColor !important;
   border: none !important;
 }
+.ant-select-selection-placeholder {
+  color: $mainColor !important;
+}
 
 // CSS Ant input status error
 .ant-input-status-error {
