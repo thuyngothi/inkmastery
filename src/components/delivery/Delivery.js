@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Flex, Form, Select, Typography, Divider, Button, Tooltip, Modal, message } from "antd"
 import { MoreOutlined } from '@ant-design/icons'
+import clsx from 'clsx'
+import axios from 'axios'
 
 import instance from '../axiosInstance'
 import styles from './Delivery.module.scss'
-import clsx from 'clsx'
 
 const { Title, Text } = Typography
 const Delivery = () => {
@@ -75,6 +76,16 @@ const Delivery = () => {
         setPutData({})
     }
     const handleConfirmDelivery = async () => {
+        const token = localStorage.getItem('token')
+        const instance = axios.create({
+            baseURL: 'https://localhost:44389',
+            timeout: 5000,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+
         setLoading(true)
         const formData = new FormData()
         formData.append('DeliveryId', putData.DeliveryId)

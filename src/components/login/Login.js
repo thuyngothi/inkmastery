@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space, Col } from 'antd'
 
 import styles from './Login.module.scss'
+import { setAccessToken, setRefreshToken } from '../authService'
 import login_img from '../../assets/images/pages/auth-v2-login-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
 const { Title, Text } = Typography
@@ -39,10 +40,12 @@ const Login = () => {
                 const res = response.data.data;
                 console.log(res)
 
-                if (!localStorage.getItem("accessToken")) {
-                    console.log(localStorage.getItem("accessToken"));
-                    localStorage.setItem("token", res.accessToken);
-                    localStorage.setItem("refresh", res.refreshToken);
+                if (!localStorage.getItem("token")) {
+                    console.log(localStorage.getItem("token"));
+                    // localStorage.setItem("token", res.accessToken);
+                    // localStorage.setItem("refresh", res.refreshToken);
+                    setAccessToken(res.accessToken);
+                    setRefreshToken(res.refreshToken);
 
                     const accessToken = localStorage.getItem('token');
                     const decoded = parseJwt(accessToken)
@@ -85,16 +88,16 @@ const Login = () => {
     return (
         <>
             <Flex className={styles.container} wrap>
-                <Col xs={24} lg={14} xl={16}                   
+                <Col xs={24} lg={14} xl={16}
                     style={{
-                        display:'flex',
+                        display: 'flex',
                         alignItems: 'center',
-                        justifyContent:'center',
+                        justifyContent: 'center',
                         height: '100%',
                         backgroundColor: '#202336',
                         padding: '40px 0'
                     }}>
-                    <img style={{ maxWidth:'60%' }} src={login_img}></img>
+                    <img style={{ maxWidth: '60%' }} src={login_img}></img>
                 </Col>
 
                 <Col xs={24} lg={10} xl={8} className={styles.content}>
@@ -116,14 +119,14 @@ const Login = () => {
                             label='Tài khoản'
                             required
                             name='username'
-                            rules={[{required:true, message:'vui lòng nhập vào tên tài khoản!'}]}
+                            rules={[{ required: true, message: 'vui lòng nhập vào tên tài khoản!' }]}
                         >
                             <Input className={styles.userInput} placeholder='Tài khoản' />
                         </Form.Item>
                         <Form.Item
                             label='Mật khẩu' required
-                            name='password'  
-                            rules={[{required:true, message: 'Vui lòng nhập vào mật khẩu!'}]}                                  
+                            name='password'
+                            rules={[{ required: true, message: 'Vui lòng nhập vào mật khẩu!' }]}
                         >
                             <Input.Password className={styles.userInput} placeholder='Mật khẩu' />
                         </Form.Item>

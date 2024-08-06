@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import { DeleteOutlined, SearchOutlined, UserAddOutlined, UsergroupAddOutlined } from "@ant-design/icons";
-import { Button, Textarea, Divider, Flex, Input, Modal, Typography, Form, Row, Select, message, Table, Space } from "antd"
+import { Button, Flex, Input, Modal, Typography, Form, Select, message, Table, Space } from "antd"
 
 import styles from './Employee.module.scss'
-import TextArea from "antd/es/input/TextArea";
 import clsx from "clsx";
 import axios from "axios";
-import { Await } from "react-router-dom";
+import instance from "../axiosInstance";
+
 const { Title, Text } = Typography
-const { Column, ColumnGroup } = Table
 
 const Employee = () => {
-    const token = localStorage.getItem('token')
-    const instance = axios.create({
-        baseURL: 'https://localhost:44389',
-        timeout: 5000,
-        headers: { 'Authorization': `Bearer ${token}` }
-    });
+    // const token = localStorage.getItem('token')
+    // const instance = axios.create({
+    //     baseURL: 'https://localhost:44389',
+    //     timeout: 5000,
+    //     headers: { 'Authorization': `Bearer ${token}` }
+    // });
 
     const [departments, setDepartments] = useState([])
     const [employees, setEmployees] = useState([])
@@ -90,6 +89,7 @@ const Employee = () => {
 
         fetchData();
     }, [isChange])
+
     // console.log(departments);
 
     // Logic Edit employee's department
