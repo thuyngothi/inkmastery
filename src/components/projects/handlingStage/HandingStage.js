@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Col, Divider, Flex, Form, Input, message, Typography } from 'antd'
 import { CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons'
 import axios from 'axios'
+
 import { useSelectedProject } from '../../../App'
 
 import styles from './HandingStage.module.scss'
@@ -19,6 +20,7 @@ const HandingStage = ({ handle }) => {
         }
     })
 
+    const [loading, setLoading] = useState(false)
     const { selectedProject } = useSelectedProject()
     const [postData, setPostData] = useState({});
 
@@ -26,7 +28,7 @@ const HandingStage = ({ handle }) => {
     const [resourceProperties, setResourceProperties] = useState([])
 
     const [printingJobs, setPrintingJobs] = useState([])
-    const [isChangePrintingJobs, setIsChangePrintingJobs ] = useState(false)
+    const [isChangePrintingJobs, setIsChangePrintingJobs] = useState(false)
 
     const createdDate = new Date(selectedProject.startDate)
     const approvedDesign = selectedProject.designs.find(item => item.designStatus === 'HasBeenApproved')
@@ -77,7 +79,7 @@ const HandingStage = ({ handle }) => {
                     const selectedPrintJobs = response.data.filter(item => item.designId === approvedDesign.id)
                     if (selectedPrintJobs.length > 0) {
                         setPrintingJobs(selectedPrintJobs.filter(item => item.printJobStatus === 'Printing').map(item => ({
-                            printJobId : item.id,
+                            printJobId: item.id,
                         })))
                     }
                     setIsChangePrintingJobs(false)
@@ -160,29 +162,29 @@ const HandingStage = ({ handle }) => {
     }
 
     const handleConfirmPrint = async () => {
-        if (printingJobs.length > 0) {
-            let result = true;
-            for (let item of printingJobs) {
-                console.log(item)
-                console.log(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
-                // try {
-                //     const response = await instance.put(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
-                //     console.log(response)
-                //     if (response.data.status !== 200) {
-                //         result = false;
-                //         message.error(response.data.message)
-                //     }
-                // } catch (error) {
-                //     console.error('Lỗi: ', error)
+        setLoading(true)
+        let result = true;
+        for (let item of printingJobs) {
+            console.log(item)
+            console.log(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
+            try {
+                const response = await instance.put(`api/Admin/ConfirmDonePrintJob/${item.printJobId}`)
+                console.log(response)
+                // if (response.data.status !== 200) {
+                //     result = false;
+                //     message.error(response.data.message)
                 // }
+            } catch (error) {
+                console.error('Lỗi: ', error)
             }
-            // if (result) {
-            //     message.success('Đã xác nhận hoàn thành tất cả các bản in!')
-            //     handle(3)
-            // } else {
-            //     message.error('Có lỗi xảy ra khi xác nhận hoàn thành in!')
-            // }
         }
+        if (result) {
+            message.success('Đã xác nhận hoàn thành tất cả các bản in!')
+            handle(3)
+        } else {
+            message.error('Có lỗi xảy ra khi xác nhận hoàn thành in!')
+        }
+        setLoading(false)
     }
 
     return (
@@ -300,7 +302,9 @@ const HandingStage = ({ handle }) => {
                 {
                     printingJobs.length > 0 &&
                     <Flex justify='flex-end'>
-                        <Button className={clsx('submitBtn', styles.printBtn)}
+                        <Button
+                            loading={loading}
+                            className={clsx('submitBtn', styles.printBtn)}
                             onClick={handleConfirmPrint}
                         >
                             Xác nhận đã hoàn thành in {<ArrowRightOutlined />}
