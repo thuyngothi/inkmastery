@@ -32,6 +32,7 @@ const MainContent = () => {
                 {
                     projects.map((item, index) => {
                         const date = new Date(item.actualEndDate)
+                        const expectedEndDate = new Date(item.expectedEndDate)
                         return (
                             <Col key={index} xs={24} sm={11} md={7} xl={5}>
                                 <Card
@@ -61,8 +62,10 @@ const MainContent = () => {
                                             }
                                         >Yêu cầu KH: {item.description}
                                         </Paragraph>
-                                        {item.progress === 100 &&
-                                            <Text>Ngày hoàn thành: {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Text>}
+                                        {item.progress === 100 ?
+                                            <Text>Ngày hoàn thành: {`${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`}</Text> :
+                                            <Text>Dự kiến hoàn thành: {`${expectedEndDate.getDate()}/${expectedEndDate.getMonth() + 1}/${expectedEndDate.getFullYear()}`}</Text>       
+                                            }
                                     </Flex>
                                 </Card>
                             </Col>
