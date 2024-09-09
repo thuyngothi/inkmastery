@@ -6,7 +6,7 @@ import clsx from 'clsx'
 import { Flex, Typography, Form, Input, Checkbox, Button, Divider, message, Space, Col } from 'antd'
 
 import styles from './Login.module.scss'
-import { setAccessToken, setRefreshToken } from '../authService'
+import { clearTokens, setAccessToken, setRefreshToken } from '../authService'
 import login_img from '../../assets/images/pages/auth-v2-login-illustration-dark.png'
 import logo from '../../assets/images/logoPrint.png'
 const { Title, Text } = Typography
@@ -41,15 +41,24 @@ const Login = () => {
                 console.log(res)
 
                 if (!localStorage.getItem("token")) {
-                    console.log(localStorage.getItem("token"));
-                    // localStorage.setItem("token", res.accessToken);
-                    // localStorage.setItem("refresh", res.refreshToken);
                     setAccessToken(res.accessToken);
                     setRefreshToken(res.refreshToken);
 
                     const accessToken = localStorage.getItem('token');
                     const decoded = parseJwt(accessToken)
-                    console.log(decoded)
+                    
+                    localStorage.setItem('userInfor', JSON.stringify(decoded))
+
+                    message.success('Login successful!')
+                    navigate('/home/main');
+                } else {
+                    clearTokens();
+                    setAccessToken(res.accessToken);
+                    setRefreshToken(res.refreshToken);
+
+                    const accessToken = localStorage.getItem('token');
+                    const decoded = parseJwt(accessToken)
+                    
                     localStorage.setItem('userInfor', JSON.stringify(decoded))
 
                     message.success('Login successful!')
